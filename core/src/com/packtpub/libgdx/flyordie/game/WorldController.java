@@ -1,4 +1,4 @@
-package com.packtpub.libgdx.canyonbunny.game;
+package com.packtpub.libgdx.flyordie.game;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -103,7 +103,7 @@ public class WorldController extends InputAdapter
 	         sprMoveSpeed);
 	       if (Gdx.input.isKeyPressed(Keys.S)) moveSelectedSprite(0,
 	         -sprMoveSpeed);
-	    // Camera Controls (move)
+	       // Camera Controls (move)
 	       float camMoveSpeed = 5 * deltaTime;
 	       float camMoveSpeedAccelerationFactor = 5;
 	       if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) camMoveSpeed *=
@@ -153,13 +153,15 @@ public class WorldController extends InputAdapter
         selectedSprite = (selectedSprite + 1) % testSprites.length;
         // Update camera's target to follow the currently
         // selected sprite
-        if (cameraHelper.hasTarget()) {
+        if (cameraHelper.hasTarget()) 
+        {
           cameraHelper.setTarget(testSprites[selectedSprite]);
         }
         Gdx.app.debug(TAG, "Sprite #" + selectedSprite + " selected");
       }
       // Toggle camera follow
-      else if (keycode == Keys.ENTER) {
+      else if (keycode == Keys.ENTER) 
+      {
         cameraHelper.setTarget(cameraHelper.hasTarget() ? null :
           testSprites[selectedSprite]);
         Gdx.app.debug(TAG, "Camera follow enabled: " +
@@ -173,8 +175,8 @@ public class WorldController extends InputAdapter
 		testSprites[selectedSprite].translate(x, y);
 	}
 	
-	 private void updateTestObjects(float deltaTime) 
-	 {
+	private void updateTestObjects(float deltaTime) 
+	{
 		    // Get current rotation from selected sprite
 		    float rotation = testSprites[selectedSprite].getRotation();
 		    // Rotate sprite by 90 degrees per second
@@ -183,6 +185,5 @@ public class WorldController extends InputAdapter
 		    rotation %= 360;
 		    // Set new rotation value to selected sprite
 		    testSprites[selectedSprite].setRotation(rotation);
-		}
-	
+	}
 }
