@@ -45,17 +45,28 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
-    public class AssetFrameOne
+    public class AssetPlayer
     {
-    	public final AtlasRegion frameOne;
+    	public final AtlasRegion character;
     	
-    	public AssetFrameOne (TextureAtlas atlas)
+    	public AssetPlayer (TextureAtlas atlas)
     	{
-    		frameOne = atlas.findRegion("frame-1");
+    		character = atlas.findRegion("frame-1");
+    	}
+    }
+    
+    public class AssetPipe
+    {
+    	public final AtlasRegion p;
+    	
+    	public AssetPipe (TextureAtlas atlas)
+    	{
+    		p = atlas.findRegion("pipe-green");
     	}
     }
 	
-	public AssetFrameOne bird;
+    public AssetPipe green;
+	public AssetPlayer bird;
 	public AssetBottomPipe bottom;
 	public AssetGoldCoin goldCoin;
 	public AssetTopPipe top;
@@ -93,7 +104,8 @@ public class Assets implements Disposable, AssetErrorListener
     	    }
     	    
     	    // create game resource objects
-    	    bird = new AssetFrameOne(atlas);
+    	    green = new AssetPipe(atlas);
+    	    bird = new AssetPlayer(atlas);
     	    top = new AssetTopPipe(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
     	    bottom = new AssetBottomPipe(atlas);
