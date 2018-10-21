@@ -15,25 +15,23 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
  */
 public class Assets implements Disposable, AssetErrorListener 
 {
-    public class AssetBunny
+    public class AssetBottomPipe
     {
-    	public final AtlasRegion head;
+    	public final AtlasRegion bottomPipe;
     	
-    	public AssetBunny (TextureAtlas atlas)
+    	public AssetBottomPipe (TextureAtlas atlas)
     	{
-    		head = atlas.findRegion("bunny_head");
+    		bottomPipe = atlas.findRegion("bottomPipe");
     	}
     }
     
-    public class AssetRock
+    public class AssetTopPipe
     {
-    	public final AtlasRegion edge;
-    	public final AtlasRegion middle;
+    	public final AtlasRegion topPipe;
     	
-    	public AssetRock (TextureAtlas atlas)
+    	public AssetTopPipe (TextureAtlas atlas)
     	{
-    		edge = atlas.findRegion("rock_edge");
-    		middle = atlas.findRegion("rock_middle");
+    		topPipe = atlas.findRegion("topPipe");
     	}
     }
     
@@ -47,21 +45,22 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
-    public class AssetFeather
+    public class AssetFrameOne
     {
-    	public final AtlasRegion feather;
+    	public final AtlasRegion frameOne;
     	
-    	public AssetFeather (TextureAtlas atlas)
+    	public AssetFrameOne (TextureAtlas atlas)
     	{
-    		feather = atlas.findRegion("item_feather");
+    		frameOne = atlas.findRegion("frame-1");
     	}
     }
 	
-	public AssetBunny bunny;
-	public AssetRock rock;
+	public AssetFrameOne bird;
+	public AssetBottomPipe bottom;
 	public AssetGoldCoin goldCoin;
-	public AssetFeather feather;
+	public AssetTopPipe top;
 	public AssetLevelDecoration levelDecoration;
+	
 	public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
@@ -94,10 +93,10 @@ public class Assets implements Disposable, AssetErrorListener
     	    }
     	    
     	    // create game resource objects
-    	    bunny = new AssetBunny(atlas);
-    	    rock = new AssetRock(atlas);
+    	    bird = new AssetFrameOne(atlas);
+    	    top = new AssetTopPipe(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
-    	    feather = new AssetFeather(atlas);
+    	    bottom = new AssetBottomPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
     	 
    }
@@ -112,18 +111,11 @@ public class Assets implements Disposable, AssetErrorListener
        public final AtlasRegion cloud01;
        public final AtlasRegion cloud02;
        public final AtlasRegion cloud03;
-       public final AtlasRegion mountainLeft;
-       public final AtlasRegion mountainRight;
-       public final AtlasRegion waterOverlay;
        public AssetLevelDecoration (TextureAtlas atlas) 
        {
            cloud01 = atlas.findRegion("cloud01");
            cloud02 = atlas.findRegion("cloud02");
            cloud03 = atlas.findRegion("cloud03");
-           mountainLeft = atlas.findRegion("mountain_left");
-           mountainRight = atlas.findRegion("mountain_right");
-           waterOverlay = atlas.findRegion("water_overlay");
-
        } 
    }
    public void error (String filename, Class type, Throwable throwable) 

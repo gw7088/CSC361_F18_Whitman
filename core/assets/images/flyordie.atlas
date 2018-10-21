@@ -1,0 +1,75 @@
+flyordie.png
+size: 1688, 1740
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bottomPipe
+  rotate: false
+  xy: 0, 0
+  size: 91, 350
+  orig: 91, 350
+  offset: 0, 0
+  index: -1
+cloud01
+  rotate: false
+  xy: 91, 0
+  size: 178, 78
+  orig: 178, 78
+  offset: 0, 0
+  index: -1
+cloud02
+  rotate: false
+  xy: 269, 0
+  size: 198, 88
+  orig: 198, 88
+  offset: 0, 0
+  index: -1
+cloud03
+  rotate: false
+  xy: 467, 0
+  size: 182, 85
+  orig: 182, 85
+  offset: 0, 0
+  index: -1
+frame-1
+  rotate: false
+  xy: 649, 0
+  size: 844, 580
+  orig: 844, 580
+  offset: 0, 0
+  index: -1
+frame-2
+  rotate: false
+  xy: 0, 580
+  size: 844, 580
+  orig: 844, 580
+  offset: 0, 0
+  index: -1
+frame-3
+  rotate: false
+  xy: 844, 580
+  size: 844, 580
+  orig: 844, 580
+  offset: 0, 0
+  index: -1
+frame-4
+  rotate: false
+  xy: 0, 1160
+  size: 844, 580
+  orig: 844, 580
+  offset: 0, 0
+  index: -1
+item_gold_coin
+  rotate: false
+  xy: 844, 1160
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+topPipe
+  rotate: false
+  xy: 900, 1160
+  size: 91, 350
+  orig: 91, 350
+  offset: 0, 0
+  index: -1
