@@ -20,7 +20,7 @@ public class Pipe extends AbstractGameObject
     	 dimension.set(1, 1.5f);
     	 regTop = Assets.instance.pipe.top;
     	 regShaft = Assets.instance.pipe.shaft;
-    	 regPipe = Assets.instance.pipe.wholePipe;
+    	 //regPipe = Assets.instance.pipe.wholePipe;
     	 // Start length of this rock
     	 setLength(1);
      }
@@ -42,14 +42,22 @@ public class Pipe extends AbstractGameObject
     	 float relX = 0;
     	 float relY = 0;
     	 
-    	 // Draw Top of pipe
-    	 reg = regPipe;
-    	 relX -= dimension.x / 4;
+    	 // Draw Shafts of pipes
+    	 reg = regShaft;
+    	 relX -= dimension.x / 2;
     	 batch.draw(reg.getTexture(), position.x + relX, position.y +
     			 relY, origin.x, origin.y, dimension.x / 4, dimension.y,
     			 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
     			 reg.getRegionWidth(), reg.getRegionHeight(), false, false);
-    	 
+    	 /**
+    	 // Draw tops of pipes
+    	 reg = regTop;
+    	 relX -= dimension.x / 2;
+    	 batch.draw(reg.getTexture(), position.x + relX, position.y +
+    			 relY, origin.x, origin.y, dimension.x / 4, dimension.y,
+    			 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
+    			 reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+    	 */
     	 
     	 /**
     	 // Draw Top of pipe

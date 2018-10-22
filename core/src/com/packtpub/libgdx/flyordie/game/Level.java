@@ -21,11 +21,13 @@ public class Level
 	 */
 	public enum BLOCK_TYPE 
 	{	
-		EMPTY(0, 0, 0), 		// black
-		SPAWN(0, 0, 255), 		// blue 
-		GOLD_COIN(0, 255, 0), 	// green
-		PIPES(255, 255, 0), 	// yellow
-		GOAL(255, 0, 0);		// red
+		EMPTY(0, 0, 0), 			// black
+		FLOOR_TOP(100,100, 0),		// Greenish
+		SPAWN(0, 0, 255), 			// blue 
+		GOLD_COIN(0, 255, 0), 		// green
+		FLOOR_SHAFT(255, 255, 0), 	// yellow
+		GOAL(255, 0, 0),			// red
+		NOTHING(50, 50, 50);
 		
 		
 		private int color;
@@ -99,16 +101,21 @@ public class Level
 				{
 						// do nothing
 				}
-				// Pipes
-				else if (BLOCK_TYPE.PIPES.sameColor(currentPixel)) 
+				else if(BLOCK_TYPE.NOTHING.sameColor(currentPixel))
+				{
+					
+				}
+				// Pipe shaft
+				else if (BLOCK_TYPE.FLOOR_SHAFT.sameColor(currentPixel)) 
 				{
 					if (lastPixel != currentPixel) 
 					{
 						obj = new Pipe();
-						float heightIncreaseFactor = 0.25f;
+						//float heightIncreaseFactor = 0.25f;
 						offsetHeight = -2.5f;
-						obj.position.set(pixelX, baseHeight * obj.dimension.y
-								* heightIncreaseFactor + offsetHeight);
+						obj.position.set(pixelX, baseHeight * obj.dimension.y + -2.5f);
+						//obj.position.set(pixelX, baseHeight * obj.dimension.y
+						//		* heightIncreaseFactor + offsetHeight);
 						pipes.add((Pipe)obj);
 					} 
 					else 
