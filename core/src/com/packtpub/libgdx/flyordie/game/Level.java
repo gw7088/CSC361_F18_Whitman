@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
+import com.packtpub.libgdx.flyordie.game.objects.Clouds;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 
 /**
@@ -57,7 +58,7 @@ public class Level
 	public Array<Pipe> pipes;
 	
 	// decoration
-	//public Clouds clouds;
+	public Clouds clouds;
 	
 	public Level (String filename)
 	{
@@ -147,12 +148,8 @@ public class Level
 		}
 				
 		// decoration
-		//clouds = new Clouds(pixmap.getWidth());
-		//clouds.position.set(0, 2);
-		//mountains = new Mountains(pixmap.getWidth());
-		//mountains.position.set(-1, -1);
-		//waterOverlay = new WaterOverlay(pixmap.getWidth());
-		//waterOverlay.position.set(0, -3.75f);
+		clouds = new Clouds(pixmap.getWidth());
+		clouds.position.set(0, 2);
 				
 		// free memory
 		pixmap.dispose();
@@ -169,14 +166,14 @@ public class Level
 		//mountains.render(batch);
 		
 		// Draw Rocks
-		//for (Rock rock : rocks)
-			//rock.render(batch);
+		for (Pipe pipe : pipes)
+			pipe.render(batch);
 		
 		// Draw WaterOverlay
 		//waterOverlay.render(batch);
 		
 		// Draw Clouds
-		//clouds.render(batch);
+		clouds.render(batch);
 	}
 	
 }
