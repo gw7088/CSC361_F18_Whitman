@@ -30,43 +30,6 @@ public class WorldController extends InputAdapter
 	{
 		Gdx.input.setInputProcessor(this);
 		cameraHelper = new CameraHelper();
-		initTestObjects();
-	}
-	
-	private void initTestObjects() 
-	{
-		// Create new array for 5 sprites 
-		testSprites = new Sprite[5]; 
-				 
-		// Create a list of texture regions 
-		Array<TextureRegion> regions = new Array<TextureRegion>();
-		regions.add(Assets.instance.green.p);
-		regions.add(Assets.instance.bird.character); 
-		regions.add(Assets.instance.top.topPipe); 
-		regions.add(Assets.instance.goldCoin.goldCoin);
-		regions.add(Assets.instance.bottom.bottomPipe);
-				 
-		// Create new sprite's using a random texture region 
-		for (int i = 0; i < testSprites.length; i++) 
-		{ 
-			Sprite spr = new Sprite(regions.random()); 
-					 
-			// Define sprite size to be 1m x 1m in game world 
-			spr.setSize(1, 1); 
-					 
-			// Set origin to sprite's center 
-			spr.setOrigin(spr.getWidth() / 2.0f, spr.getHeight() / 2.0f); 
-					 
-			// Calculate random position for sprite 
-			float randomX = MathUtils.random(-2.0f, 2.0f); 
-			float randomY = MathUtils.random(-2.0f, 2.0f); 
-			spr.setPosition(randomX, randomY); 
-					 
-			// Put new sprite into array 
-			testSprites[i] = spr; 
-		} 
-		// Set first sprite as selected one 
-		selectedSprite = 0; 
 	}
 	
 	private Pixmap createProceduralPixmap(int width, int height) 
