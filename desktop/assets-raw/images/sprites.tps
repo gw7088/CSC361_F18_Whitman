@@ -250,6 +250,32 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">green_Top.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>13,9,26,17</rect>
+                <key>scale9Paddings</key>
+                <rect>13,9,26,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">green_shaft.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,72,23,143</rect>
+                <key>scale9Paddings</key>
+                <rect>12,72,23,143</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">item_gold_coin.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>

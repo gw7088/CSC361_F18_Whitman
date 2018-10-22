@@ -11,6 +11,7 @@ import com.packtpub.libgdx.flyordie.util.Constants;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+
 /*
  * By Greg Whitman
  * Class that contains the asset manager 
@@ -19,6 +20,7 @@ public class Assets implements Disposable, AssetErrorListener
 {
 	public AssetFonts fonts;
 	
+	/**
     public class AssetBottomPipe
     {
     	public final AtlasRegion bottomPipe;
@@ -38,6 +40,7 @@ public class Assets implements Disposable, AssetErrorListener
     		topPipe = atlas.findRegion("topPipe");
     	}
     }
+    */
     
     public class AssetGoldCoin 
     {
@@ -59,21 +62,47 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
+    /**
+    public class AssetPipeShaft
+    {
+    	public final AtlasRegion shaft;
+    	
+    	public AssetPipeShaft (TextureAtlas atlas)
+    	{
+    		shaft = atlas.findRegion("green_shaft");
+    	}
+    }
+    
+    public class AssetPipeTop
+    {
+    	public final AtlasRegion top;
+    	
+    	public AssetPipeTop (TextureAtlas atlas)
+    	{
+    		top = atlas.findRegion("green_Top");
+    	}
+    }
+    */
+    
     public class AssetPipe
     {
-    	public final AtlasRegion p;
+    	public final AtlasRegion shaft;
+    	public final AtlasRegion top;
     	
     	public AssetPipe (TextureAtlas atlas)
     	{
-    		p = atlas.findRegion("pipe-green");
+    		shaft = atlas.findRegion("green_shaft");
+    		top = atlas.findRegion("green_Top");
     	}
     }
 	
-    public AssetPipe green;
+    //public AssetPipeTop tip;
+    //public AssetPipeShaft shaft;
+    public AssetPipe pipe;
 	public AssetPlayer bird;
-	public AssetBottomPipe bottom;
+	//public AssetBottomPipe bottom;
 	public AssetGoldCoin goldCoin;
-	public AssetTopPipe top;
+	//public AssetTopPipe top;
 	public AssetLevelDecoration levelDecoration;
 	
 	public static final String TAG = Assets.class.getName();
@@ -108,11 +137,12 @@ public class Assets implements Disposable, AssetErrorListener
     	    }
     	    
     	    // create game resource objects
-    	    green = new AssetPipe(atlas);
+    	    //green = new AssetPipe(atlas);
     	    bird = new AssetPlayer(atlas);
-    	    top = new AssetTopPipe(atlas);
+    	    //top = new AssetTopPipe(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
-    	    bottom = new AssetBottomPipe(atlas);
+    	    //bottom = new AssetBottomPipe(atlas);
+    	    pipe = new AssetPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
     	 
    }
