@@ -20,28 +20,6 @@ public class Assets implements Disposable, AssetErrorListener
 {
 	public AssetFonts fonts;
 	
-	/**
-    public class AssetBottomPipe
-    {
-    	public final AtlasRegion bottomPipe;
-    	
-    	public AssetBottomPipe (TextureAtlas atlas)
-    	{
-    		bottomPipe = atlas.findRegion("bottomPipe");
-    	}
-    }
-    
-    public class AssetTopPipe
-    {
-    	public final AtlasRegion topPipe;
-    	
-    	public AssetTopPipe (TextureAtlas atlas)
-    	{
-    		topPipe = atlas.findRegion("topPipe");
-    	}
-    }
-    */
-    
     public class AssetGoldCoin 
     {
     	public final AtlasRegion goldCoin;
@@ -62,52 +40,29 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
-    /**
-    public class AssetPipeShaft
-    {
-    	public final AtlasRegion shaft;
-    	
-    	public AssetPipeShaft (TextureAtlas atlas)
-    	{
-    		shaft = atlas.findRegion("green_shaft");
-    	}
-    }
-    
-    public class AssetPipeTop
-    {
-    	public final AtlasRegion top;
-    	
-    	public AssetPipeTop (TextureAtlas atlas)
-    	{
-    		top = atlas.findRegion("green_Top");
-    	}
-    }
-    */
-    
     public class AssetPipe
     {
     	public final AtlasRegion shaft;
     	public final AtlasRegion top;
+    	public final AtlasRegion wholePipe;
     	
     	public AssetPipe (TextureAtlas atlas)
     	{
     		shaft = atlas.findRegion("green_shaft");
     		top = atlas.findRegion("green_Top");
+    		wholePipe = atlas.findRegion("pipe-green");
     	}
     }
-	
-    //public AssetPipeTop tip;
-    //public AssetPipeShaft shaft;
+
     public AssetPipe pipe;
 	public AssetPlayer bird;
-	//public AssetBottomPipe bottom;
 	public AssetGoldCoin goldCoin;
-	//public AssetTopPipe top;
 	public AssetLevelDecoration levelDecoration;
 	
 	public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
+    
     // singleton: prevent instantiation from other classes
     private Assets () {}
     public void init (AssetManager assetManager) 
@@ -136,12 +91,10 @@ public class Assets implements Disposable, AssetErrorListener
     	          t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	    }
     	    
+    	    fonts = new AssetFonts();
     	    // create game resource objects
-    	    //green = new AssetPipe(atlas);
     	    bird = new AssetPlayer(atlas);
-    	    //top = new AssetTopPipe(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
-    	    //bottom = new AssetBottomPipe(atlas);
     	    pipe = new AssetPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
     	 
@@ -160,6 +113,7 @@ public class Assets implements Disposable, AssetErrorListener
        public final AtlasRegion cloud01;
        public final AtlasRegion cloud02;
        public final AtlasRegion cloud03;
+       
        public AssetLevelDecoration (TextureAtlas atlas) 
        {
            cloud01 = atlas.findRegion("cloud01");
@@ -183,28 +137,26 @@ public class Assets implements Disposable, AssetErrorListener
    
    public class AssetFonts
    {
-   	public final BitmapFont defaultSmall;
-   	public final BitmapFont defaultNormal;
-   	public final BitmapFont defaultBig;
+   		public final BitmapFont defaultSmall;
+   		public final BitmapFont defaultNormal;
+   		public final BitmapFont defaultBig;
    	
-   		 public AssetFonts()
-   		 {
-   			 // Create three fonts using Libgdx's 15px bitmap font
-   			 defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-   			 defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
-   			 defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   		public AssetFonts()
+   		{
+   			// Create three fonts using Libgdx's 15px bitmap font
+   			defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   			defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   			defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
    		
-   			 //set font sizes
-   			 defaultSmall.getData().setScale(0.75f);
-   			 defaultNormal.getData().setScale(1.0f);
-   			 defaultBig.getData().setScale(2.0f);
+   			//set font sizes
+   			defaultSmall.getData().setScale(0.75f);
+   			defaultNormal.getData().setScale(1.0f);
+   			defaultBig.getData().setScale(2.0f);
    		
-   			 //enable linear textrue filtering for smooth fonts
-   			 defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
-   			 defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
-   			 defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+   			//enable linear textrue filtering for smooth fonts
+   			defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
+   			defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
+   			defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
    		}
-   }
-   
-    
+   }   
 }
