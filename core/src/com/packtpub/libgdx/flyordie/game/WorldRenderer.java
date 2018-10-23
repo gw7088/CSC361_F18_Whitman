@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
  */
 public class WorldRenderer implements Disposable 
 {
+	// Setting up views
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private WorldController worldController;

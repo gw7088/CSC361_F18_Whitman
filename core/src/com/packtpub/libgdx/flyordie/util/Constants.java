@@ -1,5 +1,10 @@
 package com.packtpub.libgdx.flyordie.util;
 
+/**
+ * Keeps track of things that don't change
+ * @author Greg Whitman
+ *
+ */
 public class Constants 
 {
 	// Visible game world is 5 meters wide

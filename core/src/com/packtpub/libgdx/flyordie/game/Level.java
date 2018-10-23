@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
+import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 
@@ -27,9 +28,10 @@ public class Level
 		FLOOR_SHAFT(255, 255, 0), 	// yellow
 		GOAL(255, 0, 0),			// red
 		GAP(50, 50, 50), 			// RGB Value Specific
-		BORDER(255, 255, 255);		// white
+		BORDER(0, 255, 255),		// sky blue
+		BORDER_GAP(69, 69, 69);		// RGB specific
 		
-		
+		// Converts
 		private int color;
 		private BLOCK_TYPE (int r, int g, int b)
 		{
@@ -57,6 +59,7 @@ public class Level
 	}
 	
 	// objects
+	public Array<Brick> bricks;
 	public Array<Pipe> pipes;
 	
 	// decoration
@@ -75,7 +78,9 @@ public class Level
 	private void init (String filename)
 	{
 		// objects
+		bricks = new Array<Brick>();
 		pipes = new Array<Pipe>();
+		
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		// scan pixels from top-left to bottom-right
@@ -85,7 +90,6 @@ public class Level
 			for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) 
 			{
 				AbstractGameObject obj = null;
-				float offsetHeight = 0;
 						
 				// height grows from bottom to top
 				float baseHeight = pixmap.getHeight() - pixelY;
@@ -96,13 +100,39 @@ public class Level
 				// find matching color value to identify block type at (x,y)
 				// point and create the corresponding game object if there is
 				// a match
+				
 				// empty space
 				if (BLOCK_TYPE.EMPTY.sameColor(currentPixel)) 
 				{
 						// do nothing
 				}
+				else if(BLOCK_TYPE.BORDER_GAP.sameColor(currentPixel))
+				{
+					if (lastPixel != currentPixel) 
+					{
+						obj = new Brick();
+						obj.position.set(pixelX, baseHeight * obj.dimension.y + -6.0f);
+						bricks.add((Brick)obj);
+					} 
+					else 
+					{
+						bricks.get(bricks.size - 1).increaseLength(1);
+					}
+					
+				}
 				else if(BLOCK_TYPE.BORDER.sameColor(currentPixel))
 				{
+					if (lastPixel != currentPixel) 
+					{
+						obj = new Brick();
+						//offsetHeight = -2.5f;
+						obj.position.set(pixelX, baseHeight * obj.dimension.y + -6.0f);
+						bricks.add((Brick)obj);
+					} 
+					else 
+					{
+						bricks.get(bricks.size - 1).increaseLength(1);
+					}
 					
 				}
 				else if(BLOCK_TYPE.GAP.sameColor(currentPixel))
@@ -115,11 +145,8 @@ public class Level
 					if (lastPixel != currentPixel) 
 					{
 						obj = new Pipe();
-						//float heightIncreaseFactor = 0.25f;
-						offsetHeight = -2.5f;
+						//offsetHeight = -2.5f;
 						obj.position.set(pixelX, baseHeight * obj.dimension.y + -6.0f);
-						//obj.position.set(pixelX, baseHeight * obj.dimension.y
-						//		* heightIncreaseFactor + offsetHeight);
 						pipes.add((Pipe)obj);
 					} 
 					else 
@@ -173,9 +200,14 @@ public class Level
 	 */
 	public void render (SpriteBatch batch)
 	{	
+		
 		// Draw Clouds
 		clouds.render(batch);
-				
+		
+		// Draw Brick Border
+		for (Brick brick : bricks)
+			brick.render(batch);
+		
 		// Draw Pipes
 		for (Pipe pipe : pipes)
 			pipe.render(batch);
