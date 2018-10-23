@@ -15,26 +15,43 @@ import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 import com.packtpub.libgdx.flyordie.util.Constants;
 
+/**
+ * This class will control when events
+ * take place in the world and update everything
+ * @author Greg Whitman
+ *
+ */
 public class WorldController extends InputAdapter 
 {
 	private static final String TAG = WorldController.class.getName(); 
 
+	// Values used in game
     public CameraHelper cameraHelper;
     public Level level;
     public int lives;
     public int score;
 
+    /**
+     * Initialization of level loads
+     * it it
+     */
     private void initLevel () 
     {
         score = 0;
         level = new Level(Constants.LEVEL_01);
     }
     
+    /**
+     * Sets up worldController
+     */
 	public WorldController() 
 	{
 		init();
 	}
 	
+	/**
+	 * Initial values for worldController
+	 */
 	private void init() 
 	{
 		Gdx.input.setInputProcessor(this);
@@ -44,29 +61,20 @@ public class WorldController extends InputAdapter
 
 	}
 	
-	
-	private Pixmap createProceduralPixmap(int width, int height) 
-	{
-		Pixmap pixmap = new Pixmap(width, height, Format.RGBA8888);
-	       // Fill square with red color at 50% opacity
-		pixmap.setColor(1, 0, 0, 0.5f);
-		  pixmap.fill();
-		  // Draw a yellow-colored X shape on square
-		  pixmap.setColor(1, 1, 0, 1);
-		  pixmap.drawLine(0, 0, width, height);
-		  pixmap.drawLine(width, 0, 0, height);
-		  // Draw a cyan-colored border around square
-		  pixmap.setColor(0, 1, 1, 1);
-		  pixmap.drawRectangle(0, 0, width, height);
-		  return pixmap;
-	}
-	
+	/**
+	 * Updates the world on changes that occured
+	 * @param deltaTime
+	 */
 	public void update(float deltaTime) 
 	{
 		handleDebugInput(deltaTime);
 		cameraHelper.update(deltaTime);
 	}
 	
+	/**
+	 * Debug mode, enabling to look around world
+	 * @param deltaTime
+	 */
 	private void handleDebugInput(float deltaTime)
 	{
 		if (Gdx.app.getType() != ApplicationType.Desktop) return;
@@ -97,6 +105,11 @@ public class WorldController extends InputAdapter
 	    if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
 	}
 	
+	/**
+	 * Moves the camera
+	 * @param x
+	 * @param y
+	 */
 	private void moveCamera (float x, float y) 
 	{
 	       x += cameraHelper.getPosition().x;

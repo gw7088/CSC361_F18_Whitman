@@ -18,18 +18,41 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
  */
 public class Assets implements Disposable, AssetErrorListener 
 {
+	// Allows for fonts for the GUI
 	public AssetFonts fonts;
 	
-    public class AssetGoldCoin 
-    {
-    	public final AtlasRegion goldCoin;
+	/**
+     *  Assigns assets from the atlas to a
+     * region gives it a texture
+     */
+	public class AssetBrick 
+	{
+		public final AtlasRegion brickwall;
+	    
+	    public AssetBrick (TextureAtlas atlas)
+	    {
+	    	brickwall = atlas.findRegion("brickBorder");
+	    }
+	}
+	
+	/**
+	 * Assigns assets from the atlas to a
+	 * region gives it a texture
+	 */
+	public class AssetGoldCoin 
+	{
+		public final AtlasRegion goldCoin;
     	
-    	public AssetGoldCoin (TextureAtlas atlas)
-    	{
-    		goldCoin = atlas.findRegion("item_gold_coin");
-    	}
-    }
+		public AssetGoldCoin (TextureAtlas atlas)
+		{
+			goldCoin = atlas.findRegion("item_gold_coin");
+		}
+	}
     
+    /**
+     * Assigns assets from the atlas to a
+     * region gives it a texture
+     */
     public class AssetPlayer
     {
     	public final AtlasRegion character;
@@ -40,6 +63,10 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
+    /**
+     * Assigns assets from the atlas to a
+     * region gives it a texture
+     */
     public class AssetPipe
     {
     	public final AtlasRegion shaft;
@@ -54,6 +81,8 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
 
+    // All the assets names
+    public AssetBrick brick;
     public AssetPipe pipe;
 	public AssetPlayer bird;
 	public AssetGoldCoin goldCoin;
@@ -93,6 +122,7 @@ public class Assets implements Disposable, AssetErrorListener
     	    
     	    fonts = new AssetFonts();
     	    // create game resource objects
+    	    brick = new AssetBrick(atlas);
     	    bird = new AssetPlayer(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
     	    pipe = new AssetPipe(atlas);
@@ -135,6 +165,10 @@ public class Assets implements Disposable, AssetErrorListener
 
    }
    
+   /**
+	* Allows for text to be displayed for GUI
+	* and game over screen
+    */
    public class AssetFonts
    {
    		public final BitmapFont defaultSmall;

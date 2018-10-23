@@ -4,37 +4,36 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.packtpub.libgdx.flyordie.game.Assets;
 
 /**
- * Obj pipe that the bird must fly
- * through and not touch
+ * Class for the object brick border that will
+ * constrain the player and kill the player if touched
+ * 
  * @author Greg Whitman
  *
  */
-public class Pipe extends AbstractGameObject
-{
-	 // Texture for the bird/player
-     private TextureRegion regShaft;
+public class Brick extends AbstractGameObject
+{ 
+     private TextureRegion reg;   
      private int length;
      
-     // Constructs pipe
-     public Pipe() 
+     public Brick() 
      {
     	 init();
      }
    
      /**
-      * Pipes initail settings
+      * Sets up initial values for the bricks
       */
      private void init () 
      {
     	 dimension.set(1, 1.5f);
-    	 regShaft = Assets.instance.pipe.shaft;
+    	 reg = Assets.instance.brick.brickwall;
   
     	 // Start length of this rock
     	 setLength(1);
      }
      
      /**
-      * Pipes length
+      * sets length for the walls
       * @param length
       */
      public void setLength (int length) 
@@ -43,7 +42,7 @@ public class Pipe extends AbstractGameObject
      }
      
      /**
-      * Can increase size of obj
+      * Allows possibility to make longer
       * @param amount
       */
      public void increaseLength (int amount) 
@@ -54,15 +53,14 @@ public class Pipe extends AbstractGameObject
      @Override
      public void render (SpriteBatch batch) 
      {
-    	 TextureRegion reg = null;
     	 float relX = 0;
     	 float relY = 0;
     	 
-    	 // Draw Shafts of pipes
-    	 reg = regShaft;
-    	 relX -= dimension.x / 2;
+    	 //Scaling scale.x*2.0f is close
+    	 // Draws all the bricks
+    	 relX -= dimension.x;
     	 batch.draw(reg.getTexture(), position.x + relX, position.y +
-    			 relY, origin.x, origin.y, dimension.x / 4, dimension.y,
+    			 relY, origin.x, origin.y, dimension.x, dimension.y,
     			 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
     			 reg.getRegionWidth(), reg.getRegionHeight(), false, false);
      }

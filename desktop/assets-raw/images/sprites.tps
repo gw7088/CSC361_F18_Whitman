@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -181,17 +181,16 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">bottomPipe.jpg</key>
-            <key type="filename">topPipe.jpg</key>
+            <key type="filename">brickBorder.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>23,88,45,175</rect>
+                <rect>9,8,17,17</rect>
                 <key>scale9Paddings</key>
-                <rect>23,88,45,175</rect>
+                <rect>9,8,17,17</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
