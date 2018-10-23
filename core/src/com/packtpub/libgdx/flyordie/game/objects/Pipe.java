@@ -11,7 +11,7 @@ import com.packtpub.libgdx.flyordie.game.Assets;
  */
 public class Pipe extends AbstractGameObject
 {
-	 // Texture for the bird/player
+	 // Texture for the shaft
      private TextureRegion regShaft;
      private int length;
      
@@ -22,7 +22,7 @@ public class Pipe extends AbstractGameObject
      }
    
      /**
-      * Pipes initail settings
+      * Pipes initial settings
       */
      private void init () 
      {
@@ -55,14 +55,12 @@ public class Pipe extends AbstractGameObject
      public void render (SpriteBatch batch) 
      {
     	 TextureRegion reg = null;
-    	 float relX = 0;
-    	 float relY = 0;
     	 
     	 // Draw Shafts of pipes
     	 reg = regShaft;
-    	 relX -= dimension.x / 2;
-    	 batch.draw(reg.getTexture(), position.x + relX, position.y +
-    			 relY, origin.x, origin.y, dimension.x / 4, dimension.y,
+
+    	 batch.draw(reg.getTexture(), position.x, position.y,
+    			 origin.x, origin.y, dimension.x, dimension.y,
     			 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
     			 reg.getRegionWidth(), reg.getRegionHeight(), false, false);
      }
