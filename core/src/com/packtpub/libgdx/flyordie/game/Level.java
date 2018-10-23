@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import com.packtpub.libgdx.flyordie.game.objects.GoldCoin;
 import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
 import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
@@ -60,6 +61,7 @@ public class Level
 	
 	// objects
 	public Array<Brick> bricks;
+	public Array<GoldCoin> goldcoins;
 	public Array<Pipe> pipes;
 	
 	// decoration
@@ -79,6 +81,7 @@ public class Level
 	{
 		// objects
 		bricks = new Array<Brick>();
+		goldcoins = new Array<GoldCoin>();
 		pipes = new Array<Pipe>();
 		
 		// load image file that represents the level data
@@ -169,6 +172,11 @@ public class Level
 				// gold coin
 				else if (BLOCK_TYPE.GOLD_COIN.sameColor(currentPixel)) 
 				{
+					obj = new GoldCoin();
+					float offsetHeight = -1.5f;
+					obj.position.set(pixelX -.7f, baseHeight * obj.dimension.y +
+							offsetHeight);
+					goldcoins.add((GoldCoin)obj);
 					
 				}
 				// unknown object/pixel color
@@ -203,6 +211,10 @@ public class Level
 		
 		// Draw Clouds
 		clouds.render(batch);
+		
+		// Draw Gold Coins
+		for (GoldCoin goldcoin : goldcoins)
+			goldcoin.render(batch);
 		
 		// Draw Brick Border
 		for (Brick brick : bricks)
