@@ -167,8 +167,6 @@ public class Bird extends AbstractGameObject
 				setDoublePointsPowerup(false);
 			}
 		}
-		
-		
 	}
 	
 	/**
@@ -228,7 +226,7 @@ public class Bird extends AbstractGameObject
 		
 		//draw image
 		reg = regHead;
-		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y,
+		batch.draw(reg.getTexture(), position.x, position.y - 5.5f, origin.x, origin.y,
 				dimension.x, dimension.y, scale.x, scale.y, rotation, 
 				reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), 
 				reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
