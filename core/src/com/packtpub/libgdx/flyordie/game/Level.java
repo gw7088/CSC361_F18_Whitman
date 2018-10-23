@@ -8,6 +8,7 @@ import com.packtpub.libgdx.flyordie.game.objects.GoldCoin;
 import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
 import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
+import com.packtpub.libgdx.flyordie.game.objects.DoublePoint;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 
 /**
@@ -30,7 +31,8 @@ public class Level
 		GOAL(255, 0, 0),			// red
 		GAP(50, 50, 50), 			// RGB Value Specific
 		BORDER(0, 255, 255),		// sky blue
-		BORDER_GAP(69, 69, 69);		// RGB specific
+		BORDER_GAP(69, 69, 69),		// RGB specific
+		DOUBLE_POINT(33, 33, 33);	// RGB specific
 		
 		// Converts
 		private int color;
@@ -62,6 +64,7 @@ public class Level
 	// objects
 	public Array<Brick> bricks;
 	public Array<GoldCoin> goldcoins;
+	public Array<DoublePoint> doublepoints;
 	public Array<Pipe> pipes;
 	
 	// decoration
@@ -82,6 +85,7 @@ public class Level
 		// objects
 		bricks = new Array<Brick>();
 		goldcoins = new Array<GoldCoin>();
+		doublepoints = new Array<DoublePoint>();
 		pipes = new Array<Pipe>();
 		
 		// load image file that represents the level data
@@ -161,14 +165,12 @@ public class Level
 				else if (BLOCK_TYPE.SPAWN.sameColor(currentPixel)) 
 				{
 					
-				}
-						
+				}		
 				// Goal
 				else if (BLOCK_TYPE.GOAL.sameColor(currentPixel)) 
 				{
 					
-				}
-						
+				}		
 				// gold coin
 				else if (BLOCK_TYPE.GOLD_COIN.sameColor(currentPixel)) 
 				{
@@ -176,8 +178,16 @@ public class Level
 					float offsetHeight = -1.5f;
 					obj.position.set(pixelX -.7f, baseHeight * obj.dimension.y +
 							offsetHeight);
-					goldcoins.add((GoldCoin)obj);
-					
+					goldcoins.add((GoldCoin)obj);	
+				}
+				// Double Point
+				else if (BLOCK_TYPE.DOUBLE_POINT.sameColor(currentPixel)) 
+				{
+					obj = new DoublePoint();
+					float offsetHeight = -1.5f;
+					obj.position.set(pixelX -.7f, baseHeight * obj.dimension.y +
+							offsetHeight);
+					doublepoints.add((DoublePoint)obj);
 				}
 				// unknown object/pixel color
 				else 
@@ -211,6 +221,10 @@ public class Level
 		
 		// Draw Clouds
 		clouds.render(batch);
+		
+		// Draw Double Points
+		for (DoublePoint doublepoint : doublepoints)
+			doublepoint.render(batch);
 		
 		// Draw Gold Coins
 		for (GoldCoin goldcoin : goldcoins)
