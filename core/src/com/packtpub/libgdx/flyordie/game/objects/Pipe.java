@@ -26,7 +26,7 @@ public class Pipe extends AbstractGameObject
       */
      private void init () 
      {
-    	 dimension.set(1, 1.5f);
+    	 dimension.set(1, 1);//1.5f
     	 regShaft = Assets.instance.pipe.shaft;
   
     	 // Start length of this rock

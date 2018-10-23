@@ -28,4 +28,7 @@ public class Constants
 	
 	// Amount of extra lives at level start
 	public static final int LIVES_START = 3;
+
+	// How long x2 points lasts
+	public static final float DOUBLEPOINTS_POWERUP_DURATION = 9;
 }

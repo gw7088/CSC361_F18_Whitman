@@ -25,7 +25,7 @@ public class Brick extends AbstractGameObject
       */
      private void init () 
      {
-    	 dimension.set(1, 1.5f);
+    	 dimension.set(1, 1);//1.5f
     	 reg = Assets.instance.brick.brickwall;
   
     	 // Start length of this rock
