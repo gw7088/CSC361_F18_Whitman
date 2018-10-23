@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.packtpub.libgdx.flyordie.game.objects.GoldCoin;
 import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
+import com.packtpub.libgdx.flyordie.game.objects.Bird;
 import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
 import com.packtpub.libgdx.flyordie.game.objects.DoublePoint;
@@ -63,6 +64,7 @@ public class Level
 	
 	// objects
 	public Array<Brick> bricks;
+	public Bird bird;
 	public Array<GoldCoin> goldcoins;
 	public Array<DoublePoint> doublepoints;
 	public Array<Pipe> pipes;
@@ -83,6 +85,7 @@ public class Level
 	private void init (String filename)
 	{
 		// objects
+		bird = null;
 		bricks = new Array<Brick>();
 		goldcoins = new Array<GoldCoin>();
 		doublepoints = new Array<DoublePoint>();
@@ -164,6 +167,11 @@ public class Level
 				// player spawn point
 				else if (BLOCK_TYPE.SPAWN.sameColor(currentPixel)) 
 				{
+					obj = new Bird();
+					//offsetHeight = -3.0f;
+					obj.position.set(pixelX, baseHeight * obj.dimension.y);// +
+							//offsetHeight);
+					bird = (Bird)obj;
 					
 				}		
 				// Goal
@@ -237,6 +245,9 @@ public class Level
 		// Draw Pipes
 		for (Pipe pipe : pipes)
 			pipe.render(batch);
+		
+		// Draw Player Character
+		bird.render(batch);
 	}
 	
 }
