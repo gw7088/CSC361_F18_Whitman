@@ -74,7 +74,7 @@ public class Clouds extends AbstractGameObject
     private void init () 
     {
 	 
-	    dimension.set(3.0f, 1.5f);
+	    dimension.set(3.0f, 1.5f); //3.0 1.5
      
 	    regClouds = new Array<TextureRegion>();
      
@@ -108,6 +108,13 @@ public class Clouds extends AbstractGameObject
 	   cloud.setRegion(regClouds.random());
 	   // position
 	   Vector2 pos = new Vector2();
+	   
+	   float h = 0.0f;
+	   
+	   h = MathUtils.random(-5.0f, 6.0f);
+	   
+	   pos.y = h + pos.y;
+	   
 	   pos.x = length + 10; // position after end of level
 	   pos.y += 1.75; // base position
 	   pos.y += MathUtils.random(0.0f, 0.2f)
