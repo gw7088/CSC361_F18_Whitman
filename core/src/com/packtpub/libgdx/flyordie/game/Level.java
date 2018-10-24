@@ -29,6 +29,8 @@ public class Level
 		SPAWN(0, 0, 255), 			// blue 
 		GOLD_COIN(0, 255, 0), 		// green
 		FLOOR_SHAFT(255, 255, 0), 	// yellow
+		//B_PIPE(255, 255, 0),
+		//T_Pipe(0, 100, 0),
 		GOAL(255, 0, 0),			// red
 		GAP(50, 50, 50), 			// RGB Value Specific
 		BORDER(0, 255, 255),		// sky blue
