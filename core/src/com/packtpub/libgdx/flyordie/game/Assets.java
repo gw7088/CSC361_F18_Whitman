@@ -1,5 +1,7 @@
 package com.packtpub.libgdx.flyordie.game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
@@ -9,42 +11,62 @@ import com.packtpub.libgdx.flyordie.util.Constants;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+
 /*
  * By Greg Whitman
  * Class that contains the asset manager 
  */
 public class Assets implements Disposable, AssetErrorListener 
 {
-    public class AssetBottomPipe
-    {
-    	public final AtlasRegion bottomPipe;
+	// Allows for fonts for the GUI
+	public AssetFonts fonts;
+	
+	/**
+     *  Assigns assets from the atlas to a
+     * region gives it a texture
+     */
+	public class AssetBrick 
+	{
+		public final AtlasRegion brickwall;
+	    
+	    public AssetBrick (TextureAtlas atlas)
+	    {
+	    	brickwall = atlas.findRegion("brickBorder");
+	    }
+	}
+	
+	/**
+	 * Assigns assets from the atlas to a
+	 * region gives it a texture
+	 */
+	public class AssetDoublePoint 
+	{
+		public final AtlasRegion doublePoint;
     	
-    	public AssetBottomPipe (TextureAtlas atlas)
-    	{
-    		bottomPipe = atlas.findRegion("bottomPipe");
-    	}
-    }
-    
-    public class AssetTopPipe
-    {
-    	public final AtlasRegion topPipe;
+		public AssetDoublePoint (TextureAtlas atlas)
+		{
+			doublePoint = atlas.findRegion("DoublePoints");
+		}
+	}
+	
+	/**
+	 * Assigns assets from the atlas to a
+	 * region gives it a texture
+	 */
+	public class AssetGoldCoin 
+	{
+		public final AtlasRegion goldCoin;
     	
-    	public AssetTopPipe (TextureAtlas atlas)
-    	{
-    		topPipe = atlas.findRegion("topPipe");
-    	}
-    }
+		public AssetGoldCoin (TextureAtlas atlas)
+		{
+			goldCoin = atlas.findRegion("item_gold_coin");
+		}
+	}
     
-    public class AssetGoldCoin 
-    {
-    	public final AtlasRegion goldCoin;
-    	
-    	public AssetGoldCoin (TextureAtlas atlas)
-    	{
-    		goldCoin = atlas.findRegion("item_gold_coin");
-    	}
-    }
-    
+    /**
+     * Assigns assets from the atlas to a
+     * region gives it a texture
+     */
     public class AssetPlayer
     {
     	public final AtlasRegion character;
@@ -55,26 +77,36 @@ public class Assets implements Disposable, AssetErrorListener
     	}
     }
     
+    /**
+     * Assigns assets from the atlas to a
+     * region gives it a texture
+     */
     public class AssetPipe
     {
-    	public final AtlasRegion p;
+    	public final AtlasRegion shaft;
+    	public final AtlasRegion top;
+    	public final AtlasRegion bottom;
     	
     	public AssetPipe (TextureAtlas atlas)
     	{
-    		p = atlas.findRegion("pipe-green");
+    		shaft = atlas.findRegion("green_shaft");
+    		top = atlas.findRegion("Top_Pipe");
+    		bottom = atlas.findRegion("Bottom_pipe");
     	}
     }
-	
-    public AssetPipe green;
+
+    // All the assets names
+    public AssetDoublePoint doublePoint;
+    public AssetBrick brick;
+    public AssetPipe pipe;
 	public AssetPlayer bird;
-	public AssetBottomPipe bottom;
 	public AssetGoldCoin goldCoin;
-	public AssetTopPipe top;
 	public AssetLevelDecoration levelDecoration;
 	
 	public static final String TAG = Assets.class.getName();
     public static final Assets instance = new Assets();
     private AssetManager assetManager;
+    
     // singleton: prevent instantiation from other classes
     private Assets () {}
     public void init (AssetManager assetManager) 
@@ -103,12 +135,13 @@ public class Assets implements Disposable, AssetErrorListener
     	          t.setFilter(TextureFilter.Linear, TextureFilter.Linear);
     	    }
     	    
+    	    fonts = new AssetFonts();
     	    // create game resource objects
-    	    green = new AssetPipe(atlas);
+    	    doublePoint = new AssetDoublePoint(atlas);
+    	    brick = new AssetBrick(atlas);
     	    bird = new AssetPlayer(atlas);
-    	    top = new AssetTopPipe(atlas);
     	    goldCoin = new AssetGoldCoin(atlas);
-    	    bottom = new AssetBottomPipe(atlas);
+    	    pipe = new AssetPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
     	 
    }
@@ -116,6 +149,9 @@ public class Assets implements Disposable, AssetErrorListener
    public void dispose () 
    {
      assetManager.dispose();
+     fonts.defaultSmall.dispose();
+     fonts.defaultNormal.dispose();
+     fonts.defaultBig.dispose();
    }
    
    public class AssetLevelDecoration
@@ -123,6 +159,7 @@ public class Assets implements Disposable, AssetErrorListener
        public final AtlasRegion cloud01;
        public final AtlasRegion cloud02;
        public final AtlasRegion cloud03;
+       
        public AssetLevelDecoration (TextureAtlas atlas) 
        {
            cloud01 = atlas.findRegion("cloud01");
@@ -143,5 +180,33 @@ public class Assets implements Disposable, AssetErrorListener
             asset.fileName + "'", (Exception)throwable);
 
    }
-    
+   
+   /**
+	* Allows for text to be displayed for GUI
+	* and game over screen
+    */
+   public class AssetFonts
+   {
+   		public final BitmapFont defaultSmall;
+   		public final BitmapFont defaultNormal;
+   		public final BitmapFont defaultBig;
+   	
+   		public AssetFonts()
+   		{
+   			// Create three fonts using Libgdx's 15px bitmap font
+   			defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   			defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   			defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+   		
+   			//set font sizes
+   			defaultSmall.getData().setScale(0.75f);
+   			defaultNormal.getData().setScale(1.0f);
+   			defaultBig.getData().setScale(2.0f);
+   		
+   			//enable linear textrue filtering for smooth fonts
+   			defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
+   			defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear,  TextureFilter.Linear);
+   			defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+   		}
+   }   
 }
