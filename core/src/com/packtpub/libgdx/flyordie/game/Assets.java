@@ -85,13 +85,13 @@ public class Assets implements Disposable, AssetErrorListener
     {
     	public final AtlasRegion shaft;
     	public final AtlasRegion top;
-    	public final AtlasRegion wholePipe;
+    	public final AtlasRegion bottom;
     	
     	public AssetPipe (TextureAtlas atlas)
     	{
     		shaft = atlas.findRegion("green_shaft");
-    		top = atlas.findRegion("green_Top");
-    		wholePipe = atlas.findRegion("pipe-green");
+    		top = atlas.findRegion("Top_Pipe");
+    		bottom = atlas.findRegion("Bottom_pipe");
     	}
     }
 
