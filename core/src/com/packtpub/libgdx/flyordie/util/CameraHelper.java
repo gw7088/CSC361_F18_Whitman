@@ -42,7 +42,7 @@ public class CameraHelper
 		position.y = target.position.y + target.origin.y;
 		
 		// Prevent camera from moving down too far
-		position.y = Math.max(-1f,position.y);
+		//position.y = Math.max(-1f,position.y);
 	}
 	
 	/**
@@ -51,11 +51,6 @@ public class CameraHelper
 	 */
 	public void setTarget(AbstractGameObject target)
 	{
-		////
-		////
-		////
-		////
-		////
 		this.target = target;
 	}
 	

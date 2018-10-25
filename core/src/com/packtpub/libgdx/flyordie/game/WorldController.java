@@ -159,14 +159,19 @@ public class WorldController extends InputAdapter implements Disposable
     	}
     	
     	// Clouds
+    	Vector2 cloudOrigin = new Vector2();
     	Clouds cloud = level.clouds;
     	BodyDef bodyDef = new BodyDef();
-    	bodyDef.type = BodyType.DynamicBody;
+    	bodyDef.type = BodyType.StaticBody;
     	bodyDef.position.set(cloud.position);
     	Body body = b2world.createBody(bodyDef);
     	level.clouds.body = body;
     	
     	PolygonShape polygonShape = new PolygonShape();
+    	cloudOrigin.x = (cloud.bounds.width / 2.0f);
+    	cloudOrigin.y = (cloud.bounds.height / 1.8f);
+    	polygonShape.setAsBox(cloud.bounds.width / 2.0f, cloud.bounds.height / 2.0f, cloudOrigin, 0);
+    	
     	int x = (int) (level.clouds.bounds.width / 2.0f);
     	int y = (int) (level.clouds.bounds.width / 2.0f);
     	polygonShape.setAsBox(x, y);
@@ -177,9 +182,10 @@ public class WorldController extends InputAdapter implements Disposable
     	polygonShape.dispose();
     	
     	// Bird
+    	Vector2 birdOrigin = new Vector2();
     	Bird bird = level.bird;
     	BodyDef Def = new BodyDef();
-    	Def.type = BodyType.KinematicBody;
+    	Def.type = BodyType.DynamicBody;
     	Def.position.set(bird.position);
     	
     	//b = b2world.createBody(Def);
@@ -187,9 +193,9 @@ public class WorldController extends InputAdapter implements Disposable
     	level.bird.body = b;
     	
     	PolygonShape shape = new PolygonShape();
-    	int x2 = (int) (level.bird.bounds.width / 2.0f);
-    	int y2 = (int) (level.bird.bounds.width / 2.0f);
-    	polygonShape.setAsBox(x2, y2);
+    	birdOrigin.x = (bird.bounds.width / 2.0f);
+    	birdOrigin.y = (bird.bounds.height / 1.8f);
+    	polygonShape.setAsBox(bird.bounds.width / 2.0f, bird.bounds.height / 2.0f, birdOrigin, 0);
     	
     	FixtureDef fixture = new FixtureDef();
     	fixture.shape = shape;

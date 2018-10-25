@@ -50,7 +50,7 @@ public class Bird extends AbstractGameObject
 		regHead = Assets.instance.bird.character;
 		
 		//center image on game object
-		origin.set(dimension.x /2, dimension.y /2);
+		//origin.set(dimension.x /2, dimension.y /2);
 		
 		//Bounding box for collision detection
 		bounds.set(0, 0, dimension.x, dimension.y);
@@ -128,7 +128,7 @@ public class Bird extends AbstractGameObject
 		
 		//draw image
 		reg = regHead;
-		batch.draw(reg.getTexture(), position.x, position.y - 5.5f, origin.x, origin.y,
+		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, // position.y - 5.5f
 				dimension.x, dimension.y, scale.x, scale.y, rotation, 
 				reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), 
 				reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
