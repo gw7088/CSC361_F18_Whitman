@@ -12,8 +12,6 @@ import com.packtpub.libgdx.flyordie.game.Assets;
 public class Pipe extends AbstractGameObject
 {
 	 // Texture for the shaft
-     private TextureRegion regShaft;
-     private TextureRegion top;
      private TextureRegion bottom;
      private int length;
      
@@ -28,9 +26,7 @@ public class Pipe extends AbstractGameObject
       */
      private void init () 
      {
-    	 dimension.set(1, 1);//1.5f
-    	 regShaft = Assets.instance.pipe.shaft;
-    	 top = Assets.instance.pipe.top;
+    	 dimension.set(1, 1); //1.5f
     	 bottom = Assets.instance.pipe.bottom;
   
     	 // Start length of this rock
@@ -44,6 +40,7 @@ public class Pipe extends AbstractGameObject
      public void setLength (int length) 
      {
     	 this.length = length;
+    	 bounds.set(0, 0, dimension.x * length, dimension.y);
      }
      
      /**
@@ -59,31 +56,6 @@ public class Pipe extends AbstractGameObject
      public void render (SpriteBatch batch) 
      {
     	 TextureRegion reg = null;
-    	 
-    	 /**
-    	  * I Tried drawing all the pipes first and then all of the pipe tip
-    	  * 
-    	  * 
-    	 float relX = 0;
-    	 float relY = 0;
-         reg = bottom;
-         for (int i = 0; i < length; i++) 
-         {
-             batch.draw(reg.getTexture(), position.x + relX, position.y
-            		 +  relY, origin.x, origin.y, dimension.x, dimension.y,
-            		 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
-            		 reg.getRegionWidth(), reg.getRegionHeight(), false, false);
-             
-             relY += dimension.y;
-         }
-         
-         reg = top;
-         batch.draw(reg.getTexture(),position.x + relX, position.y +
-        		 relY, origin.x + dimension.x / 8, origin.y, dimension.x / 4,
-        		 dimension.y, scale.x, scale.y, rotation + 90, reg.getRegionX(),
-        		 reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
-        		 true, false);
-         */
     	 
     	 // Draw Shafts of pipes
     	 reg = bottom;

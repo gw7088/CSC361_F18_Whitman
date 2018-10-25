@@ -252,4 +252,33 @@ public class Level
 		bird.render(batch);
 	}
 	
+	/**
+	 * Updates changes to the objects
+	 * @param deltaTime time in the level
+	 */
+	public void update (float deltaTime)
+	{	
+		// Updates the changes in the clouds
+		clouds.update(deltaTime);
+		
+		// Draw Double Points
+		for (DoublePoint doublepoint : doublepoints)
+			doublepoint.update(deltaTime);
+		
+		// Draw Gold Coins
+		for (GoldCoin goldcoin : goldcoins)
+			goldcoin.update(deltaTime);
+				
+		// Draw Brick Border
+		for (Brick brick : bricks)
+			brick.update(deltaTime);
+				
+		// Draw Pipes
+		for (Pipe pipe : pipes)
+			pipe.update(deltaTime);
+				
+		// Draw Player Character
+		bird.update(deltaTime);
+	}
+	
 }

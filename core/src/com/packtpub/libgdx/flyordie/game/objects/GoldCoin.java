@@ -16,6 +16,8 @@ public class GoldCoin extends AbstractGameObject
 	
 	//flag that determines whether the bunny has collected the coin
     public boolean collected;
+
+	private int length;
     
     /**
      * Constructor that calls the helper method init()
@@ -36,6 +38,7 @@ public class GoldCoin extends AbstractGameObject
     {
       dimension.set(0.5f, 0.5f);
       regGoldCoin = Assets.instance.goldCoin.goldCoin;
+      bounds.set(0, 0, dimension.x, dimension.y);
       collected = false;
     }
     
@@ -47,6 +50,7 @@ public class GoldCoin extends AbstractGameObject
     public void render (SpriteBatch batch) 
     {
       if (collected) return;
+      
       TextureRegion reg = null;
       reg = regGoldCoin;
       batch.draw(reg.getTexture(), position.x, position.y,

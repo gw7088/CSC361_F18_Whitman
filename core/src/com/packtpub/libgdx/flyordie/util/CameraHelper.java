@@ -1,31 +1,28 @@
 package com.packtpub.libgdx.flyordie.util;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.packtpub.libgdx.flyordie.game.objects.AbstractGameObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * This sets up the camera that will be used to view
- * the game world
- * 
- * @author Greg Whitman
+ * Camera helper to help move the camera
+ * @author Denny Fleagle 
+ *
  */
 public class CameraHelper 
 {
 	private static final String TAG = CameraHelper.class.getName();
 	
-	// Camera zoom values
 	private final float MAX_ZOOM_IN = 0.25f;
 	private final float MAX_ZOOM_OUT = 10.0f;
 	
-	// Camera positioning
 	private Vector2 position;
 	private float zoom;
-	private Sprite target;
+	private AbstractGameObject target;
 	
-	/*
-	 * Moves camera
+	/**
+	 * constructor 
 	 */
 	public CameraHelper () 
 	{
@@ -34,19 +31,40 @@ public class CameraHelper
 	}
 	
 	/**
-	 * Keeps the camera updated as it moves
+	 * Update the camerahelper to point at a location
 	 * @param deltaTime
 	 */
 	public void update (float deltaTime) 
 	{
 		if (!hasTarget()) return;
 			
-		position.x = target.getX() + target.getOriginX();
-		position.y = target.getY() + target.getOriginY();
+		position.x = target.position.x + target.origin.x;
+		position.y = target.position.y + target.origin.y;
+		
+		// Prevent camera from moving down too far
+		position.y = Math.max(-1f,position.y);
 	}
 	
 	/**
-	 * Camera positioning
+	 * Set the target to point at a specific game object
+	 * @param target
+	 */
+	public void setTarget(AbstractGameObject target)
+	{
+		//this.target = target;
+	}
+	
+	/**
+	 * Get the target of the camera
+	 * @return target
+	 */
+	public AbstractGameObject getTarget()
+	{
+		return target;
+	}
+	
+	/**
+	 * set the position of the camera
 	 * @param x
 	 * @param y
 	 */
@@ -56,25 +74,19 @@ public class CameraHelper
 	}
 	
 	/**
-	 * Gets camearas coordinates
+	 * get the position of the camera
 	 * @return
 	 */
-	public Vector2 getPosition () 
-	{ 
-		return position; 
-	}
+	public Vector2 getPosition () { return position; }
 	
 	/**
-	 * Zoom in function
+	 * add zoom to the camera
 	 * @param amount
 	 */
-	public void addZoom (float amount) 
-	{ 
-		setZoom(zoom + amount); 	
-	}
+	public void addZoom (float amount) { setZoom(zoom + amount); }
 	
 	/**
-	 * Zoom out function
+	 * Set the zoom of the camera
 	 * @param zoom
 	 */
 	public void setZoom (float zoom) 
@@ -83,53 +95,28 @@ public class CameraHelper
 	}
 	
 	/**
-	 * How much the camera is moved in/out
+	 * get the zoom of the camera
 	 * @return
 	 */
-	public float getZoom () 
-	{ 
-		return zoom; 
-	}
+	public float getZoom () { return zoom; }
 	
 	/**
-	 * Current target in cameras focus
-	 * @param target
+	 * ask if the target is null
+	 * @return true if the target is null
 	 */
-	public void setTarget (Sprite target ) 
-	{ 
-		this.target = target; 
-	}
-	
+	public boolean hasTarget () { return target != null; }
 	/**
-	 * What camera is looking at
-	 * @return
-	 */
-	public Sprite getTarget () 
-	{ 
-		return target; 
-	}
-	
-	/**
-	 * If camera is tracking
-	 * @return
-	 */
-	public boolean hasTarget () 
-	{ 
-		return target != null; 
-	}
-	
-	/**
-	 * Targets obj to view
+	 * ask the camera if the game object is the target
 	 * @param target
 	 * @return
 	 */
-	public boolean hasTarget (Sprite target) 
+	public boolean hasTarget(AbstractGameObject target)
 	{
-		return hasTarget () && this.target.equals(target);
+		return hasTarget() && this.target.equals(target);
 	}
 	
 	/**
-	 * Sets up the camera
+	 * apply the camera to 
 	 * @param camera
 	 */
 	public void applyTo (OrthographicCamera camera) 

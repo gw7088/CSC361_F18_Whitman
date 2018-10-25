@@ -1,7 +1,9 @@
 package com.packtpub.libgdx.flyordie.game.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 /**
  * Basic form of the objects
@@ -16,6 +18,9 @@ public abstract class AbstractGameObject
 	public Vector2 scale;
 	public float rotation;
 	
+	public Rectangle bounds;
+	public Body body;
+	
 	/**
 	 * All game objects should have instantiated 
 	 * variables to work with.
@@ -26,6 +31,7 @@ public abstract class AbstractGameObject
 		dimension = new Vector2(1, 1);
 		origin = new Vector2();
 		scale = new Vector2(1, 1);
+		bounds = new Rectangle();
 		rotation = 0;
 	}
 	
@@ -35,7 +41,7 @@ public abstract class AbstractGameObject
 	 */
 	public void update(float deltaTime)
 	{
-		
+		position.set(body.getPosition());
 	}
 	
 	/**
