@@ -90,15 +90,7 @@ public class Bird extends AbstractGameObject
 	public void update(float deltaTime)
 	{
 		super.update(deltaTime);
-		
-		/**
-		//if the bunny head is moving set the direction of travel
-		if(velocity.x != 0)
-		{
-			viewDirection = velocity.x < 0 ? VIEW_DIRECTION.LEFT : VIEW_DIRECTION.RIGHT;
-		}
-		*/
-		
+
 		//if the bird has x2 power up
 		if(timeLeftDoublePoints > 0)
 		{
@@ -134,18 +126,6 @@ public class Bird extends AbstractGameObject
 				reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
 		
 		//reset color to white
-		batch.setColor(1,1,1,1);
-		
-	}
-
-	public void setJumpingTrue() 
-	{
-		jump = true;
-	}
-	
-	public boolean isjumping(boolean jump)
-	{
-		System.out.println("Jumped!!");
-		return jump;
+		batch.setColor(1,1,1,1);	
 	}
 }
