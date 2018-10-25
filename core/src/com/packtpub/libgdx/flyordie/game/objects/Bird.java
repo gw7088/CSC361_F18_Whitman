@@ -30,6 +30,9 @@ public class Bird extends AbstractGameObject
 	//instance variable to determine time left for x2's power
 	public float timeLeftDoublePoints;
 	
+	//Jump boolean
+	public boolean jump;
+	
 	/**
 	 * constructor for the bird
 	 */
@@ -137,7 +140,12 @@ public class Bird extends AbstractGameObject
 
 	public void setJumpingTrue() 
 	{
-				
+		jump = true;
 	}
 	
+	public boolean isjumping(boolean jump)
+	{
+		System.out.println("Jumped!!");
+		return jump;
+	}
 }

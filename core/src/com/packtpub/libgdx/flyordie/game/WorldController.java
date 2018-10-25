@@ -45,6 +45,9 @@ public class WorldController extends InputAdapter implements Disposable
     public Level level;
     public int lives;
     public int score;
+    
+    //BodyDef Def = new BodyDef();
+    //Body b;
 
     /**
      * Initialization of level loads
@@ -178,6 +181,8 @@ public class WorldController extends InputAdapter implements Disposable
     	BodyDef Def = new BodyDef();
     	Def.type = BodyType.KinematicBody;
     	Def.position.set(bird.position);
+    	
+    	//b = b2world.createBody(Def);
     	Body b = b2world.createBody(Def);
     	level.bird.body = b;
     	
@@ -188,7 +193,7 @@ public class WorldController extends InputAdapter implements Disposable
     	
     	FixtureDef fixture = new FixtureDef();
     	fixture.shape = shape;
-    	body.createFixture(fixture);
+    	b.createFixture(fixture);
     	polygonShape.dispose();
 	}
 
@@ -213,7 +218,7 @@ public class WorldController extends InputAdapter implements Disposable
 	}
 	
 	/**
-	 * Updates the world on changes that occured
+	 * Updates the world on changes that occurred
 	 * @param deltaTime
 	 */
 	public void update(float deltaTime) 
@@ -242,20 +247,20 @@ public class WorldController extends InputAdapter implements Disposable
 	       // Player Movement
 	       if (Gdx.input.isKeyPressed(Keys.LEFT)) 
 	       {
-	         
+	    	   System.out.println("Left");
 	       } 
 	       else if (Gdx.input.isKeyPressed(Keys.RIGHT)) 
 	       {
-	        
+	    	   System.out.println("Right");
 	       } 
 	       else 
 	       {
 	        
 	       }
 	       // Bird Jump
-	       if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
+	       if (Gdx.input.isKeyPressed(Keys.SPACE))
 	       {
-	    	   level.bird.setJumpingTrue();
+	    	   System.out.println("Jump");
 	       } 
 	       else 
 	       {
@@ -263,7 +268,7 @@ public class WorldController extends InputAdapter implements Disposable
 	       }
 	     } 
 	   }
-	
+
 	/**
 	 * Debug mode, enabling to look around world
 	 * @param deltaTime
