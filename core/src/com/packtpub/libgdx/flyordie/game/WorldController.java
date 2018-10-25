@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -46,7 +47,11 @@ public class WorldController extends InputAdapter implements Disposable
     public int lives;
     public int score;
     
-    //BodyDef Def = new BodyDef();
+    public boolean keyDown = false;
+    
+	private Rectangle r1 = new Rectangle();
+	private Rectangle r2 = new Rectangle();
+    
     Body b;
 
     /**
@@ -199,6 +204,7 @@ public class WorldController extends InputAdapter implements Disposable
     	
     	FixtureDef fixture = new FixtureDef();
     	fixture.shape = shape;
+    	fixture.restitution = .25f;
     	b.createFixture(fixture);
     	polygonShape.dispose();
     	
@@ -234,10 +240,12 @@ public class WorldController extends InputAdapter implements Disposable
 		handleDebugInput(deltaTime);
 		cameraHelper.update(deltaTime);
 		
+		b.applyForceToCenter(2, 0, true);
+		b.setLinearDamping(1);
 
 		handleInputGame(deltaTime);
 		level.update(deltaTime);
-		//testCollisions();
+		testCollisions();
 		b2world.step(deltaTime, 8, 3);
 		cameraHelper.update(deltaTime);
 	}
@@ -252,33 +260,42 @@ public class WorldController extends InputAdapter implements Disposable
 	{
 	     if (cameraHelper.hasTarget(level.bird)) 
 	     {
-	       // Player Movement
-	       if (Gdx.input.isKeyPressed(Keys.LEFT)) 
-	       {
-	    	   System.out.println("Left");
-	    	   b.applyForceToCenter(-5, 0, true);
-	       } 
-	       else if (Gdx.input.isKeyPressed(Keys.RIGHT)) 
-	       {
-	    	   System.out.println("Right");
-	    	   b.applyForceToCenter(5, 0, true);
-	       } 
-	       else 
-	       {
+	    	 // Player Movement
+	    	 if (Gdx.input.isKeyPressed(Keys.LEFT)) 
+	    	 {
+	    		 //System.out.println("Left");
+	    		 b.applyForceToCenter(-5, 0, true);
+	    	 } 
+	    	 else if (Gdx.input.isKeyPressed(Keys.RIGHT)) 
+	    	 {
+	    		 System.out.println("Right");
+	    		 b.applyForceToCenter(5, 0, true);
+	    	 } 
+	    	 else 
+	    	 {
 	        
-	       }
-	       // Bird Jump
-	       if (Gdx.input.isKeyPressed(Keys.SPACE))
-	       {
-	    	   System.out.println("Jump");
-	    	   b.applyForceToCenter(0, 100, true); // 0, 100, true
-	       } 
-	       else 
-	       {
+	    	 }
+	    	 // Bird Jump
+	    	 if (Gdx.input.isKeyPressed(Keys.SPACE))
+	    	 {
+	    		 long lastPressProcessed = 0;
+	    		 
+         		 if(System.currentTimeMillis() - lastPressProcessed > 5000) 
+	    		 {
+         			 //Do your work here...
+	    		     lastPressProcessed = System.currentTimeMillis();     
+
+	    		     System.out.println("Jump");
+	    		     b.applyForceToCenter(0, 100, true); // 0, 100, true	 
+
+	    		 }
+	    	 } 
+	    	 else 
+	    	 {
 	         
-	       }
+	    	 }
 	     } 
-	   }
+	}
 
 	/**
 	 * Debug mode, enabling to look around world
@@ -314,6 +331,64 @@ public class WorldController extends InputAdapter implements Disposable
 	    if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.setZoom(1);
 	}
 	
+	/**
+	 * Method that checks for collisions between the bunnyhead 
+	 * the other game objects such as the rock, goldcoin, and feather 
+	 * by checking if their rectangular bounding boxes overlap. If so a
+	 * helper method will be called to take some action in the game.  
+	 */
+	private void testCollisions () 
+	{
+	     r1.set(level.bird.position.x, level.bird.position.y,
+	    		 level.bird.bounds.width+.03f, level.bird.bounds.height);
+	     // Test collision: Bunny Head <-> Rocks
+	     for (Pipe pipe : level.pipes) 
+	     {
+	    	 r2.set(pipe.position.x, pipe.position.y, pipe.bounds.width,
+	    			 pipe.bounds.height);
+	    	 if (!r1.overlaps(r2)) continue;
+	    	 
+	    	 onCollisionBirdWithPipe(pipe);
+	     }
+	     
+	     /**
+	     // Test collision: Bunny Head <-> Gold Coins
+	     for (GoldCoin goldcoin : level.goldcoins)
+	     {
+	    	 if (goldcoin.collected) continue;
+	    	 r2.set(goldcoin.position.x, goldcoin.position.y,
+	    			 goldcoin.bounds.width, goldcoin.bounds.height);
+	    	 if (!r1.overlaps(r2)) continue;
+	    	 onCollisionBunnyWithGoldCoin(goldcoin);
+	    	 break;
+	     }
+	     // Test collision: Bunny Head <-> Feathers
+	     for (Feather feather : level.feathers) 
+	     {
+	    	 if (feather.collected) continue;
+	    	 r2.set(feather.position.x, feather.position.y,
+	    			 feather.bounds.width, feather.bounds.height);
+	    	 if (!r1.overlaps(r2)) continue;
+	    	 onCollisionBunnyWithFeather(feather);
+	    	 break;
+	     } 
+	     // Test collision: Bunny Head <-> Goal
+	     if (!goalReached) 
+	     {
+	    	 r2.set(level.goal.bounds);
+	         r2.x += level.goal.position.x;
+	         r2.y += level.goal.position.y;
+	         if (r1.overlaps(r2)) onCollisionBunnyWithGoal();
+	     }
+	     */
+	
+	 }
+	
+	private void onCollisionBirdWithPipe(Pipe pipe) 
+	{
+		System.out.println("I HIT A PIPE");
+	}
+
 	/**
 	 * Moves the camera
 	 * @param x
