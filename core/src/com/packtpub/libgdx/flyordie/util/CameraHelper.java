@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Camera helper to help move the camera
- * @author Denny Fleagle 
+ * @author Gregory Whitman 
  *
  */
 public class CameraHelper 
@@ -31,7 +31,7 @@ public class CameraHelper
 	}
 	
 	/**
-	 * Update the camerahelper to point at a location
+	 * Update the camera helper to point at a location
 	 * @param deltaTime
 	 */
 	public void update (float deltaTime) 
@@ -51,7 +51,12 @@ public class CameraHelper
 	 */
 	public void setTarget(AbstractGameObject target)
 	{
-		//this.target = target;
+		////
+		////
+		////
+		////
+		////
+		this.target = target;
 	}
 	
 	/**
