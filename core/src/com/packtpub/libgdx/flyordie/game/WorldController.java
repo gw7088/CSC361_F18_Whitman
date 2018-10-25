@@ -47,7 +47,7 @@ public class WorldController extends InputAdapter implements Disposable
     public int score;
     
     //BodyDef Def = new BodyDef();
-    //Body b;
+    Body b;
 
     /**
      * Initialization of level loads
@@ -66,7 +66,7 @@ public class WorldController extends InputAdapter implements Disposable
     	
     	if (b2world != null) b2world.dispose();
     	
-    	b2world = new World(new Vector2(0, -1f), true);
+    	b2world = new World(new Vector2(0, -9.81f), true);
     	
     	// Pipes
     	Vector2 pipeOrigin = new Vector2();
@@ -189,7 +189,7 @@ public class WorldController extends InputAdapter implements Disposable
     	Def.position.set(bird.position);
     	
     	//b = b2world.createBody(Def);
-    	Body b = b2world.createBody(Def);
+    	b = b2world.createBody(Def);
     	level.bird.body = b;
     	
     	PolygonShape shape = new PolygonShape();
@@ -201,6 +201,8 @@ public class WorldController extends InputAdapter implements Disposable
     	fixture.shape = shape;
     	b.createFixture(fixture);
     	polygonShape.dispose();
+    	
+    	
 	}
 
 	/**
@@ -254,10 +256,12 @@ public class WorldController extends InputAdapter implements Disposable
 	       if (Gdx.input.isKeyPressed(Keys.LEFT)) 
 	       {
 	    	   System.out.println("Left");
+	    	   b.applyForceToCenter(-5, 0, true);
 	       } 
 	       else if (Gdx.input.isKeyPressed(Keys.RIGHT)) 
 	       {
 	    	   System.out.println("Right");
+	    	   b.applyForceToCenter(5, 0, true);
 	       } 
 	       else 
 	       {
@@ -267,6 +271,7 @@ public class WorldController extends InputAdapter implements Disposable
 	       if (Gdx.input.isKeyPressed(Keys.SPACE))
 	       {
 	    	   System.out.println("Jump");
+	    	   b.applyForceToCenter(0, 100, true); // 0, 100, true
 	       } 
 	       else 
 	       {
