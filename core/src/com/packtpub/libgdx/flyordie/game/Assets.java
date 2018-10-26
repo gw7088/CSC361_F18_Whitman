@@ -25,6 +25,20 @@ public class Assets implements Disposable, AssetErrorListener
      *  Assigns assets from the atlas to a
      * region gives it a texture
      */
+	public class AssetGoal 
+	{
+		public final AtlasRegion goal;
+	    
+	    public AssetGoal (TextureAtlas atlas)
+	    {
+	    	goal = atlas.findRegion("finsih1");
+	    }
+	}
+	
+	/**
+     *  Assigns assets from the atlas to a
+     * region gives it a texture
+     */
 	public class AssetBrick 
 	{
 		public final AtlasRegion brickwall;
@@ -96,6 +110,7 @@ public class Assets implements Disposable, AssetErrorListener
     }
 
     // All the assets names
+    public AssetGoal goal;
     public AssetDoublePoint doublePoint;
     public AssetBrick brick;
     public AssetPipe pipe;
@@ -137,6 +152,7 @@ public class Assets implements Disposable, AssetErrorListener
     	    
     	    fonts = new AssetFonts();
     	    // create game resource objects
+    	    goal = new AssetGoal(atlas);
     	    doublePoint = new AssetDoublePoint(atlas);
     	    brick = new AssetBrick(atlas);
     	    bird = new AssetPlayer(atlas);
