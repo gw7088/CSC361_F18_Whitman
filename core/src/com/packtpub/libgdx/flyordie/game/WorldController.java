@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.Application.ApplicationType;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -21,6 +22,7 @@ import com.packtpub.libgdx.flyordie.game.objects.Goal;
 import com.packtpub.libgdx.flyordie.game.objects.GoldCoin;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 import com.packtpub.libgdx.flyordie.util.Constants;
+import com.packtpub.libgdx.flyordie.screens.MenuScreen;
 import com.packtpub.libgdx.flyordie.game.objects.Bird;
 
 /**
@@ -31,6 +33,9 @@ import com.packtpub.libgdx.flyordie.game.objects.Bird;
  */
 public class WorldController extends InputAdapter implements Disposable 
 {
+	//an instance of the game object (added p233 Denny Fleagle)
+	private Game game;
+	
 	public World b2world;
 	
 	private static final String TAG = WorldController.class.getName(); 
@@ -242,9 +247,19 @@ public class WorldController extends InputAdapter implements Disposable
 	/**
      * Sets up worldController
      */
-	public WorldController() 
+	public WorldController(Game game) 
 	{
+		this.game = game;
 		init();
+	}
+	
+	/**
+	 * allows us to switch back to the menu screen
+	 */
+	private void backToMenu()
+	{
+		//switch to menu screen
+		game.setScreen(new MenuScreen(game));
 	}
 	
 	/**
@@ -278,7 +293,7 @@ public class WorldController extends InputAdapter implements Disposable
 			timeLeftGameOverDelay -= deltaTime;
 			if (timeLeftGameOverDelay < 0)
 			{
-			//	backToMenu();
+				backToMenu();
 				return; 
 			}
 		}

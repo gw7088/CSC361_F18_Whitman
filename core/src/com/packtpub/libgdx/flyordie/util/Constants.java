@@ -33,4 +33,7 @@ public class Constants
 	public static final float DOUBLEPOINTS_POWERUP_DURATION = 5;
 
 	public static final float TIME_DELAY_GAME_FINISHED = 3;
+	
+	 // Game preferences file
+	public static final String PREFERENCES = "flyordie.prefs";
 }
