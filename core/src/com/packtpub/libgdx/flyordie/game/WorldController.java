@@ -1,10 +1,5 @@
 package com.packtpub.libgdx.flyordie.game;
 
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -18,8 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.packtpub.libgdx.flyordie.util.CameraHelper;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
@@ -49,6 +42,8 @@ public class WorldController extends InputAdapter implements Disposable
     public int score;
     public float livesVisual;
     public float scoreVisual;
+    
+    private float timeLeftGameOverDelay;
     
     int timeLeft = 0;
     float timeLeftDoublePointsup; 
@@ -99,6 +94,7 @@ public class WorldController extends InputAdapter implements Disposable
     		FixtureDef fixtureDef = new FixtureDef();
     		fixtureDef.shape = polygonShape;
     		fixtureDef.restitution = 0f;
+    		//fixtureDef.isSensor = true;
     		body.createFixture(fixtureDef);
     		polygonShape.dispose();
     	}
@@ -115,7 +111,6 @@ public class WorldController extends InputAdapter implements Disposable
     		brick.body = body;
     		
     		PolygonShape polygonShape = new PolygonShape();
-    		//polygonShape.setAsBox(brick.origin.x, brick.origin.y);
     		brickOrigin.x = brick.bounds.width / 2.0f;
     		brickOrigin.y = brick.bounds.height / 2.0f;
     		polygonShape.setAsBox(brick.bounds.width / 2.0f, brick.bounds.height / 2.0f, brickOrigin, 0);
@@ -215,6 +210,7 @@ public class WorldController extends InputAdapter implements Disposable
     	
     	FixtureDef fixtureDef = new FixtureDef();
     	fixtureDef.shape = polygonShape;
+    	fixtureDef.isSensor = true;
     	body.createFixture(fixtureDef);
     	polygonShape.dispose();
     	
@@ -261,6 +257,7 @@ public class WorldController extends InputAdapter implements Disposable
 		cameraHelper = new CameraHelper();
 		lives = Constants.LIVES_START;
 		livesVisual = lives;
+		timeLeftGameOverDelay = 0;
 		initLevel();
 
 	}
@@ -271,76 +268,37 @@ public class WorldController extends InputAdapter implements Disposable
 	 */
 	public void update(float deltaTime) 
 	{
-		/**
-		handleDebugInput(deltaTime);
-		
-		if (scoreVisual < score)
-		{
-			scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
-		}
-		
-		cameraHelper.update(deltaTime);
-		
-		b.applyForceToCenter(3, 0, true);
-		b.setLinearDamping(1);
-		
-		timeLeftDoublePointsup -= deltaTime;
-
-		if (timeLeftDoublePointsup <= 0)
-			timeLeftDoublePointsup = 0;
-		
-		handleInputGame(deltaTime);
-		level.update(deltaTime);
-		testCollisions();
-		b2world.step(deltaTime, 8, 3);
-		cameraHelper.update(deltaTime);
-		*/
-		
-		//if (isGameOver() || goalReached)
-		if (goalReached)
+		if (isGameOver() || goalReached)
 		{
 			Gdx.input.setInputProcessor(null);
 			level.update(deltaTime);
 			testCollisions();
 			b2world.step(deltaTime, 8, 3);
 			cameraHelper.update(deltaTime);
-			//timeLeftGameOverDelay -= deltaTime;
-			//if (timeLeftGameOverDelay < 0)
-			//{
+			timeLeftGameOverDelay -= deltaTime;
+			if (timeLeftGameOverDelay < 0)
+			{
 			//	backToMenu();
-			//	return; 
-			//}
+				return; 
+			}
 		}
 		else
 		{
 			handleInputGame(deltaTime);
+			
+			b.applyForceToCenter(3, 0, true);
+			b.setLinearDamping(1);
+			
 			level.update(deltaTime);
 			testCollisions();
 			b2world.step(deltaTime, 8, 3);
 			cameraHelper.update(deltaTime);
-			//if (livesVisual > lives)
-			//{
-			//	livesVisual = Math.max(lives, livesVisual - 1 * deltaTime);
-			//}
+	
 			if (scoreVisual < score)
 			{
 				scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
 			}
-		//}
-		//if (!isGameOver() && isPlayerInWater())
-		//{
-			//AudioManager.instance.play(Assets.instance.sounds.liveLost);
-			//lives--;
-			//if (isGameOver())
-			//{
-			//	timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_OVER;
-			//}
-			//else
-			//{
-			//initLevel();
-			//}
 		}
-		
 	}
 	
 	/**
@@ -356,13 +314,11 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 // Player Movement
 	    	 if (Gdx.input.isKeyPressed(Keys.LEFT)) 
 	    	 {
-	    		 //System.out.println("Left");
-	    		 b.applyForceToCenter(-5, 0, true);
+	    		 
 	    	 } 
 	    	 else if (Gdx.input.isKeyPressed(Keys.RIGHT)) 
 	    	 {
-	    		 System.out.println("Right");
-	    		 b.applyForceToCenter(5, 0, true);
+
 	    	 } 
 	    	 else 
 	    	 {
@@ -426,8 +382,19 @@ public class WorldController extends InputAdapter implements Disposable
 	}
 	
 	/**
-	 * Method that checks for collisions between the bunnyhead 
-	 * the other game objects such as the rock, goldcoin, and feather 
+	 * Method that checks to see if the 
+	 * game has ended 
+	 * @return boolean that returns true if game is done,
+	 * false otherwise
+	 */
+	public boolean isGameOver ()
+	{
+		   return lives <= 0;
+	}
+	
+	/**
+	 * Method that checks for collisions between the bird 
+	 * the other game objects such as the rock, goldCoin, and DP 
 	 * by checking if their rectangular bounding boxes overlap. If so a
 	 * helper method will be called to take some action in the game.  
 	 */
@@ -435,7 +402,8 @@ public class WorldController extends InputAdapter implements Disposable
 	{
 	     r1.set(level.bird.position.x, level.bird.position.y,
 	    		 level.bird.bounds.width+.03f, level.bird.bounds.height);
-	     // Test collision: Bunny Head <-> Rocks
+	     
+	     // Test collision: Pipes
 	     for (Pipe pipe : level.pipes) 
 	     {
 	    	 r2.set(pipe.position.x, pipe.position.y, pipe.bounds.width,
@@ -445,7 +413,7 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 onCollisionBirdWithPipe(pipe);
 	     }
 	     
-	     // Test collision: Bunny Head <-> Gold Coins
+	     // Test collision: GoldCoins
 	     for (GoldCoin goldcoin : level.goldcoins)
 	     {
 	    	 if (goldcoin.collected) continue;
@@ -456,7 +424,7 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 break;
 	     }
 	     
-	     // Test collision: Bunny Head <-> Feathers
+	     // Test collision: Dp
 	     for (DoublePoint doublepoint : level.doublepoints) 
 	     {
 	    	 if (doublepoint.collected) continue;
@@ -467,7 +435,7 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 break;
 	     }
 	     
-	     // Test collision: Bunny Head <-> Gold Coins
+	     // Test collision: Goal
 	     for (Goal goal : level.goals)
 	     {
 	    	 r2.set(goal.position.x, goal.position.y,
@@ -477,24 +445,40 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 break;
 	     }
 	     
-	     /**
-	     // Test collision: Bunny Head <-> Goal
-	     if (!goalReached) 
+	     // Test collision: Brick
+	     for (Brick brick : level.bricks) 
 	     {
-	    	 r2.set(level.goal.bounds);
-	         r2.x += level.goal.position.x;
-	         r2.y += level.goal.position.y;
-	         if (r1.overlaps(r2)) onCollisionBunnyWithGoal();
+	    	 r2.set(brick.position.x, brick.position.y, brick.bounds.width,
+	    			 brick.bounds.height);
+	    	 if (!r1.overlaps(r2)) continue;
+	    	 
+	    	 onCollisionBirdWithBrick(brick);
 	     }
-	     */
-	
 	 }
 	
+	/**
+	 * Effect of collision
+	 * @param pipe
+	 */
 	private void onCollisionBirdWithPipe(Pipe pipe) 
 	{
-		Gdx.app.log(TAG, "Hit a pipe");
+		lives--;
 	}
 	
+	/**
+	 * Effect of collision
+	 * @param brick
+	 */
+	private void onCollisionBirdWithBrick(Brick brick) 
+	{
+
+		lives--;
+	}
+	
+	/**
+	 * Effect of collision
+	 * @param goldcoin
+	 */
 	private void onCollisionBirdWithGoldCoin(GoldCoin goldcoin)
 	{
 		goldcoin.collected = true;
@@ -511,6 +495,10 @@ public class WorldController extends InputAdapter implements Disposable
 		}
 	}
 	
+	/**
+	 * Effect of collision
+	 * @param doublepoint
+	 */
 	private void onCollisionBirdWithDoublePoint(DoublePoint doublepoint)
 	{
 		doublepoint.collected = true;
@@ -519,8 +507,13 @@ public class WorldController extends InputAdapter implements Disposable
 		timeLeftDoublePointsup = Constants.DOUBLEPOINTS_POWERUP_DURATION;
 	}
 	
+	/**
+	 * Effect of collision
+	 * @param goal
+	 */
 	private void onCollisionBirdWithGoal(Goal goal)
 	{
+		timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_FINISHED;
 		System.out.println("REACHED THE GOAL");
 		goalReached = true;
 	}

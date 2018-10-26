@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.flyordie.game.Assets;
 import com.packtpub.libgdx.flyordie.util.Constants;
@@ -59,13 +60,16 @@ public class WorldRenderer implements Disposable
 	       renderGuiScore(batch);
 	       
 	       // Draw double point icon
-	       renderGuiFeatherPowerup(batch);
+	       renderGuiDoublePointsup(batch);
 	       
 	       // draw extra lives icon + text (anchored to top right edge)
 	       renderGuiExtraLive(batch);
 	       
 	       // draw FPS text (anchored to bottom right edge)
 	       renderGuiFpsCounter(batch);
+	       
+	       // draw game over text
+	       renderGuiGameOverMessage(batch);
 	       batch.end();
 	}
 	/**
@@ -161,9 +165,9 @@ public class WorldRenderer implements Disposable
 		//}
 		
 		float x = cameraGUI.viewportWidth - 50 -
-				Constants.LIVES_START * 50;
+				1 * 50;
 		float y = -15;
-		for (int i = 0; i < Constants.LIVES_START; i++)
+		for (int i = 0; i < 1; i++)//Constants.LIVES_START; i++)
 		{
 			if (worldController.lives <= i)
 				batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
@@ -215,11 +219,33 @@ public class WorldRenderer implements Disposable
 	}
 	
 	/**
+	 * Creates the GAME OVER message which will be overlayed
+	 * in the GUI when the player dies.
+	 * @param batch will be drawn
+	 */
+	private void renderGuiGameOverMessage (SpriteBatch batch)
+	{
+		float x = cameraGUI.viewportWidth / 2;
+		float y = cameraGUI.viewportHeight / 2;
+		
+		if (worldController.isGameOver())
+		{
+			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			
+
+			fontGameOver.draw(batch, "GAME OVER", x, y, 1, Align.center, false);
+			
+			fontGameOver.setColor(1, 1, 1, 1);
+		}
+	}
+	
+	/**
 	 * Method that renders the feather in the
 	 * user GUI when collected
 	 * @param batch an object of SpriteBatch that represents a collection of sprites
 	 */
-	private void renderGuiFeatherPowerup(SpriteBatch batch)
+	private void renderGuiDoublePointsup(SpriteBatch batch)
 	{
 		float x = -15;
 		float y = 30;
