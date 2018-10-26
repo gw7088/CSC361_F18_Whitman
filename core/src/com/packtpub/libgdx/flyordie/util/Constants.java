@@ -27,8 +27,10 @@ public class Constants
 	public static final String LEVEL_01 = "levels/level-01.png";
 	
 	// Amount of extra lives at level start
-	public static final int LIVES_START = 3;
+	public static final int LIVES_START = 1;
 
 	// How long x2 points lasts
 	public static final float DOUBLEPOINTS_POWERUP_DURATION = 5;
+
+	public static final float TIME_DELAY_GAME_FINISHED = 3;
 }
