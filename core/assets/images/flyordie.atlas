@@ -1,89 +1,89 @@
 flyordie.png
-size: 1688, 1740
+size: 1688, 1320
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 Bottom_pipe
   rotate: false
-  xy: 0, 0
+  xy: 34, 0
   size: 48, 160
   orig: 48, 160
   offset: 0, 0
   index: -1
 brickBorder
   rotate: false
-  xy: 48, 0
+  xy: 0, 0
   size: 34, 33
   orig: 34, 33
   offset: 0, 0
   index: -1
 cloud01
   rotate: false
-  xy: 82, 0
+  xy: 194, 0
   size: 178, 78
   orig: 178, 78
   offset: 0, 0
   index: -1
 cloud02
   rotate: false
-  xy: 260, 0
+  xy: 554, 0
   size: 198, 88
   orig: 198, 88
   offset: 0, 0
   index: -1
 cloud03
   rotate: false
-  xy: 458, 0
+  xy: 372, 0
   size: 182, 85
   orig: 182, 85
   offset: 0, 0
   index: -1
 DoublePoints
   rotate: false
-  xy: 640, 0
+  xy: 138, 0
   size: 56, 56
   orig: 56, 56
   offset: 0, 0
   index: -1
+finsih1
+  rotate: false
+  xy: 752, 0
+  size: 318, 159
+  orig: 318, 159
+  offset: 0, 0
+  index: -1
 frame-1
   rotate: false
-  xy: 696, 0
+  xy: 844, 740
   size: 844, 580
   orig: 844, 580
   offset: 0, 0
   index: -1
 frame-2
   rotate: false
-  xy: 0, 580
+  xy: 0, 740
   size: 844, 580
   orig: 844, 580
   offset: 0, 0
   index: -1
 frame-3
   rotate: false
-  xy: 844, 580
+  xy: 844, 160
   size: 844, 580
   orig: 844, 580
   offset: 0, 0
   index: -1
 frame-4
   rotate: false
-  xy: 0, 1160
+  xy: 0, 160
   size: 844, 580
   orig: 844, 580
   offset: 0, 0
   index: -1
 item_gold_coin
   rotate: false
-  xy: 844, 1160
+  xy: 82, 0
   size: 56, 56
   orig: 56, 56
-  offset: 0, 0
-  index: -1
-Top_Pipe
-  rotate: false
-  xy: 900, 1160
-  size: 52, 24
-  orig: 52, 24
   offset: 0, 0
   index: -1

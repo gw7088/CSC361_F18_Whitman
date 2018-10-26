@@ -39,6 +39,7 @@ public class Brick extends AbstractGameObject
      public void setLength (int length) 
      {
     	 this.length = length;
+    	 bounds.set(0, 0, dimension.x * length, dimension.y);
      }
      
      /**
@@ -58,8 +59,8 @@ public class Brick extends AbstractGameObject
     	 
     	 //Scaling scale.x*2.0f is close
     	 // Draws all the bricks
-    	 relX -= dimension.x;
-    	 batch.draw(reg.getTexture(), position.x + relX, position.y +
+    	 //relX -= dimension.x;
+    	 batch.draw(reg.getTexture(), position.x, position.y +	// position.x + relX
     			 relY, origin.x, origin.y, dimension.x, dimension.y,
     			 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(),
     			 reg.getRegionWidth(), reg.getRegionHeight(), false, false);

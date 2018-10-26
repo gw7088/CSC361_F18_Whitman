@@ -3,7 +3,11 @@ package com.packtpub.libgdx.flyordie.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.packtpub.libgdx.flyordie.game.Assets;
 import com.packtpub.libgdx.flyordie.util.Constants;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
@@ -18,6 +22,9 @@ public class WorldRenderer implements Disposable
 	private SpriteBatch batch;
 	private WorldController worldController;
 	private OrthographicCamera cameraGUI;
+	
+	private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
+	private Box2DDebugRenderer b2debugRenderer;
 	
 	public WorldRenderer (WorldController worldController) 
 	{ 
@@ -40,6 +47,8 @@ public class WorldRenderer implements Disposable
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true); // flip y-axis
 		cameraGUI.update();
+		
+		b2debugRenderer = new Box2DDebugRenderer();
 	}
 	
 	private void renderGui (SpriteBatch batch) 
@@ -49,10 +58,18 @@ public class WorldRenderer implements Disposable
 	       // draw collected gold coins icon + text
 	       // (anchored to top left edge)
 	       renderGuiScore(batch);
+	       
+	       // Draw double point icon
+	       renderGuiDoublePointsup(batch);
+	       
 	       // draw extra lives icon + text (anchored to top right edge)
 	       renderGuiExtraLive(batch);
+	       
 	       // draw FPS text (anchored to bottom right edge)
 	       renderGuiFpsCounter(batch);
+	       
+	       // draw game over text
+	       renderGuiGameOverMessage(batch);
 	       batch.end();
 	}
 	/**
@@ -93,6 +110,11 @@ public class WorldRenderer implements Disposable
 		batch.begin();
 		worldController.level.render(batch);
 		batch.end();
+		
+		if (DEBUG_DRAW_BOX2D_WORLD)
+		{
+			b2debugRenderer.render(worldController.b2world, camera.combined);
+		}
 	}
 	
 	/**
@@ -101,12 +123,27 @@ public class WorldRenderer implements Disposable
 	 */
 	private void renderGuiScore (SpriteBatch batch) 
 	{
+		//float x = -15;
+		//float y = -15;
+		//batch.draw(Assets.instance.goldCoin.goldCoin,  x, y, 50, 50, 100,
+		//		100, 0.35f, -0.35f, 0);
+		//Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.score,
+		//		x + 75, y + 37);
+		
 		float x = -15;
 		float y = -15;
-		batch.draw(Assets.instance.goldCoin.goldCoin,  x, y, 50, 50, 100,
-				100, 0.35f, -0.35f, 0);
-		Assets.instance.fonts.defaultBig.draw(batch, "" + worldController.score,
-				x + 75, y + 37);
+		float offsetX = 50;
+		float offsetY = 50;
+		if (worldController.scoreVisual<worldController.score) 
+		{
+		   long shakeAlpha = System.currentTimeMillis() % 360;
+		   float shakeDist = 1.5f;
+		   offsetX += MathUtils.sinDeg(shakeAlpha * 2.2f) * shakeDist;
+		   offsetY += MathUtils.sinDeg(shakeAlpha * 2.9f) * shakeDist;
+		}
+		batch.draw(Assets.instance.goldCoin.goldCoin, x, y, offsetX,
+		offsetY, 100, 100, 0.35f, -0.35f, 0);
+		Assets.instance.fonts.defaultBig.draw(batch, "" + (int)worldController.scoreVisual, x + 75, y + 37);
 	}
 	
 	/**
@@ -115,10 +152,22 @@ public class WorldRenderer implements Disposable
 	 */
 	private void renderGuiExtraLive (SpriteBatch batch)
 	{
+		//float x = cameraGUI.viewportWidth - 50 -
+		//		Constants.LIVES_START * 50;
+		//float y = -15;
+		//for (int i = 0; i < Constants.LIVES_START; i++)
+		//{
+		//	if (worldController.lives <= i)
+		//		batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
+		//	batch.draw(Assets.instance.bird.character, 
+		//			x + i * 50, y, 50, 50, 120, 100, 0.35f, -0.35f, 0);
+		//	batch.setColor(1, 1, 1, 1);
+		//}
+		
 		float x = cameraGUI.viewportWidth - 50 -
-				Constants.LIVES_START * 50;
+				1 * 50;
 		float y = -15;
-		for (int i = 0; i < Constants.LIVES_START; i++)
+		for (int i = 0; i < 1; i++)//Constants.LIVES_START; i++)
 		{
 			if (worldController.lives <= i)
 				batch.setColor(0.5f, 0.5f, 0.5f, 0.5f);
@@ -126,6 +175,17 @@ public class WorldRenderer implements Disposable
 					x + i * 50, y, 50, 50, 120, 100, 0.35f, -0.35f, 0);
 			batch.setColor(1, 1, 1, 1);
 		}
+		if (worldController.lives>= 0 &&worldController.livesVisual>worldController.lives) 
+		{ 
+			
+			int i = worldController.lives;
+		    float alphaColor = Math.max(0, worldController.livesVisual- worldController.lives - 0.5f);
+		    float alphaScale = 0.35f * (2 + worldController.lives - worldController.livesVisual) * 2;
+		    float alphaRotate = -45 * alphaColor;
+		    batch.setColor(1.0f, 0.7f, 0.7f, alphaColor);
+		    batch.draw(Assets.instance.bird.character, x + i * 50, y, 50, 50, 120, 100, alphaScale, -alphaScale,alphaRotate);
+		    batch.setColor(1, 1, 1, 1);
+		 }
 	}
 	
 	/**
@@ -156,6 +216,60 @@ public class WorldRenderer implements Disposable
 		}
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); // white
+	}
+	
+	/**
+	 * Creates the GAME OVER message which will be overlayed
+	 * in the GUI when the player dies.
+	 * @param batch will be drawn
+	 */
+	private void renderGuiGameOverMessage (SpriteBatch batch)
+	{
+		float x = cameraGUI.viewportWidth / 2;
+		float y = cameraGUI.viewportHeight / 2;
+		
+		if (worldController.isGameOver())
+		{
+			BitmapFont fontGameOver = Assets.instance.fonts.defaultBig;
+			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			
+
+			fontGameOver.draw(batch, "GAME OVER", x, y, 1, Align.center, false);
+			
+			fontGameOver.setColor(1, 1, 1, 1);
+		}
+	}
+	
+	/**
+	 * Method that renders the feather in the
+	 * user GUI when collected
+	 * @param batch an object of SpriteBatch that represents a collection of sprites
+	 */
+	private void renderGuiDoublePointsup(SpriteBatch batch)
+	{
+		float x = -15;
+		float y = 30;
+		float timeLeftDoublePointsup = 
+				worldController.timeLeftDoublePointsup;
+		
+		if (timeLeftDoublePointsup > 0)
+		{
+			// Start icon fade in/out if the left power-up time
+			// is less than 4 seconds. The fade interval is sete
+			// to 5 changes per second.
+			if (timeLeftDoublePointsup < 4)
+			{
+				if (((int) (timeLeftDoublePointsup * 5) % 2) != 0)
+				{
+					batch.setColor(1, 1, 1, 0.5f);
+				}
+			}
+			
+			batch.draw(Assets.instance.doublePoint.doublePoint,
+					x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			batch.setColor(1, 1, 1, 1);
+			Assets.instance.fonts.defaultSmall.draw(batch, "", x + 60, y + 57);
+		}
 	}
 	
 	/**

@@ -10,6 +10,7 @@ import com.packtpub.libgdx.flyordie.game.objects.Bird;
 import com.packtpub.libgdx.flyordie.game.objects.Brick;
 import com.packtpub.libgdx.flyordie.game.objects.Clouds;
 import com.packtpub.libgdx.flyordie.game.objects.DoublePoint;
+import com.packtpub.libgdx.flyordie.game.objects.Goal;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 
 /**
@@ -70,6 +71,7 @@ public class Level
 	public Array<GoldCoin> goldcoins;
 	public Array<DoublePoint> doublepoints;
 	public Array<Pipe> pipes;
+	public Array<Goal> goals;
 	
 	// decoration
 	public Clouds clouds;
@@ -92,6 +94,7 @@ public class Level
 		goldcoins = new Array<GoldCoin>();
 		doublepoints = new Array<DoublePoint>();
 		pipes = new Array<Pipe>();
+		goals = new Array<Goal>();
 		
 		// load image file that represents the level data
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
@@ -179,7 +182,9 @@ public class Level
 				// Goal
 				else if (BLOCK_TYPE.GOAL.sameColor(currentPixel)) 
 				{
-					
+					obj = new Goal();
+					obj.position.set(pixelX, baseHeight * obj.dimension.y + -6.0f);
+					goals.add((Goal)obj);	
 				}		
 				// gold coin
 				else if (BLOCK_TYPE.GOLD_COIN.sameColor(currentPixel)) 
@@ -248,8 +253,45 @@ public class Level
 		for (Pipe pipe : pipes)
 			pipe.render(batch);
 		
+		// Draw Goal
+		for (Goal goal : goals)
+			goal.render(batch);
+		
 		// Draw Player Character
 		bird.render(batch);
+	}
+	
+	/**
+	 * Updates changes to the objects
+	 * @param deltaTime time in the level
+	 */
+	public void update (float deltaTime)
+	{	
+		// Updates the changes in the clouds
+		clouds.update(deltaTime);
+		
+		// Draw Double Points
+		for (DoublePoint doublepoint : doublepoints)
+			doublepoint.update(deltaTime);
+		
+		// Draw Gold Coins
+		for (GoldCoin goldcoin : goldcoins)
+			goldcoin.update(deltaTime);
+				
+		// Draw Brick Border
+		for (Brick brick : bricks)
+			brick.update(deltaTime);
+				
+		// Draw Pipes
+		for (Pipe pipe : pipes)
+			pipe.update(deltaTime);
+		
+		// Draw Goal
+			for (Goal goal : goals)
+				goal.update(deltaTime);
+				
+		// Draw Player Character
+		bird.update(deltaTime);
 	}
 	
 }
