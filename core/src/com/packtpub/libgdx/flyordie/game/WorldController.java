@@ -46,8 +46,8 @@ public class WorldController extends InputAdapter implements Disposable
     public Level level;
     public int lives;
     public int score;
-    
-    public boolean keyDown = false;
+    public float livesVisual;
+    public float scoreVisual;
     
 	private Rectangle r1 = new Rectangle();
 	private Rectangle r2 = new Rectangle();
@@ -61,6 +61,7 @@ public class WorldController extends InputAdapter implements Disposable
     private void initLevel () 
     {
         score = 0;
+        scoreVisual = score;
         level = new Level(Constants.LEVEL_01);
         cameraHelper.setTarget(level.bird);
         initPhysics();
@@ -125,7 +126,7 @@ public class WorldController extends InputAdapter implements Disposable
     	for (GoldCoin goldcoin : level.goldcoins)
     	{
     		BodyDef bodyDef = new BodyDef();
-    		bodyDef.type = BodyType.KinematicBody;
+    		bodyDef.type = BodyType.StaticBody;
     		bodyDef.position.set(goldcoin.position);
     		Body body = b2world.createBody(bodyDef);
     		goldcoin.body = body;
@@ -137,6 +138,7 @@ public class WorldController extends InputAdapter implements Disposable
     		
     		FixtureDef fixtureDef = new FixtureDef();
     		fixtureDef.shape = polygonShape;
+    		fixtureDef.isSensor = true;
     		body.createFixture(fixtureDef);
     		polygonShape.dispose();
     	}
@@ -147,7 +149,7 @@ public class WorldController extends InputAdapter implements Disposable
     	for (DoublePoint doublepoint : level.doublepoints)
     	{
     		BodyDef bodyDef = new BodyDef();
-    		bodyDef.type = BodyType.KinematicBody;
+    		bodyDef.type = BodyType.StaticBody;
     		bodyDef.position.set(doublepoint.position);
     		Body body = b2world.createBody(bodyDef);
     		doublepoint.body = body;
@@ -159,6 +161,7 @@ public class WorldController extends InputAdapter implements Disposable
     		
     		FixtureDef fixtureDef = new FixtureDef();
     		fixtureDef.shape = polygonShape;
+    		fixtureDef.isSensor = true;
     		body.createFixture(fixtureDef);
     		polygonShape.dispose();
     	}
@@ -226,7 +229,8 @@ public class WorldController extends InputAdapter implements Disposable
 	{
 		Gdx.input.setInputProcessor(this);
 		cameraHelper = new CameraHelper();
-		lives = Constants.LIVES_START; 
+		lives = Constants.LIVES_START;
+		livesVisual = lives;
 		initLevel();
 
 	}
@@ -238,9 +242,15 @@ public class WorldController extends InputAdapter implements Disposable
 	public void update(float deltaTime) 
 	{
 		handleDebugInput(deltaTime);
+		
+		if (scoreVisual < score)
+		{
+			scoreVisual = Math.min(score,  scoreVisual + 250 * deltaTime);
+		}
+		
 		cameraHelper.update(deltaTime);
 		
-		b.applyForceToCenter(2, 0, true);
+		b.applyForceToCenter(3, 0, true);
 		b.setLinearDamping(1);
 
 		handleInputGame(deltaTime);
@@ -286,7 +296,8 @@ public class WorldController extends InputAdapter implements Disposable
 	    		     lastPressProcessed = System.currentTimeMillis();     
 
 	    		     System.out.println("Jump");
-	    		     b.applyForceToCenter(0, 100, true); // 0, 100, true	 
+	    		     //b.applyForceToCenter(0, 100, true); // 0, 100, true
+	    		     b.applyLinearImpulse(0, 1, .5f, .5f, true);
 
 	    		 }
 	    	 } 
@@ -351,7 +362,6 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 onCollisionBirdWithPipe(pipe);
 	     }
 	     
-	     /**
 	     // Test collision: Bunny Head <-> Gold Coins
 	     for (GoldCoin goldcoin : level.goldcoins)
 	     {
@@ -359,19 +369,22 @@ public class WorldController extends InputAdapter implements Disposable
 	    	 r2.set(goldcoin.position.x, goldcoin.position.y,
 	    			 goldcoin.bounds.width, goldcoin.bounds.height);
 	    	 if (!r1.overlaps(r2)) continue;
-	    	 onCollisionBunnyWithGoldCoin(goldcoin);
+	    	 onCollisionBirdWithGoldCoin(goldcoin);
 	    	 break;
 	     }
+	     
 	     // Test collision: Bunny Head <-> Feathers
-	     for (Feather feather : level.feathers) 
+	     for (DoublePoint doublepoint : level.doublepoints) 
 	     {
-	    	 if (feather.collected) continue;
-	    	 r2.set(feather.position.x, feather.position.y,
-	    			 feather.bounds.width, feather.bounds.height);
+	    	 if (doublepoint.collected) continue;
+	    	 r2.set(doublepoint.position.x, doublepoint.position.y,
+	    			 doublepoint.bounds.width, doublepoint.bounds.height);
 	    	 if (!r1.overlaps(r2)) continue;
-	    	 onCollisionBunnyWithFeather(feather);
+	    	 onCollisionBirdWithDoublePoint(doublepoint);
 	    	 break;
-	     } 
+	     }
+	     
+	     /**
 	     // Test collision: Bunny Head <-> Goal
 	     if (!goalReached) 
 	     {
@@ -386,7 +399,20 @@ public class WorldController extends InputAdapter implements Disposable
 	
 	private void onCollisionBirdWithPipe(Pipe pipe) 
 	{
-		System.out.println("I HIT A PIPE");
+		Gdx.app.log(TAG, "Hit a pipe");
+	}
+	
+	private void onCollisionBirdWithGoldCoin(GoldCoin goldcoin)
+	{
+		goldcoin.collected = true;
+	    score += goldcoin.getScore();
+	    Gdx.app.log(TAG, "Gold coin collected");
+	}
+	
+	private void onCollisionBirdWithDoublePoint(DoublePoint doublepoint)
+	{
+		doublepoint.collected = true;
+		Gdx.app.log(TAG, "Double point collected");
 	}
 
 	/**
