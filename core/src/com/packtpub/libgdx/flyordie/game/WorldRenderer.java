@@ -57,8 +57,13 @@ public class WorldRenderer implements Disposable
 	       // draw collected gold coins icon + text
 	       // (anchored to top left edge)
 	       renderGuiScore(batch);
+	       
+	       // Draw double point icon
+	       renderGuiFeatherPowerup(batch);
+	       
 	       // draw extra lives icon + text (anchored to top right edge)
 	       renderGuiExtraLive(batch);
+	       
 	       // draw FPS text (anchored to bottom right edge)
 	       renderGuiFpsCounter(batch);
 	       batch.end();
@@ -207,6 +212,38 @@ public class WorldRenderer implements Disposable
 		}
 		fpsFont.draw(batch, "FPS: " + fps, x, y);
 		fpsFont.setColor(1, 1, 1, 1); // white
+	}
+	
+	/**
+	 * Method that renders the feather in the
+	 * user GUI when collected
+	 * @param batch an object of SpriteBatch that represents a collection of sprites
+	 */
+	private void renderGuiFeatherPowerup(SpriteBatch batch)
+	{
+		float x = -15;
+		float y = 30;
+		float timeLeftDoublePointsup = 
+				worldController.timeLeftDoublePointsup;
+		
+		if (timeLeftDoublePointsup > 0)
+		{
+			// Start icon fade in/out if the left power-up time
+			// is less than 4 seconds. The fade interval is sete
+			// to 5 changes per second.
+			if (timeLeftDoublePointsup < 4)
+			{
+				if (((int) (timeLeftDoublePointsup * 5) % 2) != 0)
+				{
+					batch.setColor(1, 1, 1, 0.5f);
+				}
+			}
+			
+			batch.draw(Assets.instance.doublePoint.doublePoint,
+					x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+			batch.setColor(1, 1, 1, 1);
+			Assets.instance.fonts.defaultSmall.draw(batch, "", x + 60, y + 57);
+		}
 	}
 	
 	/**

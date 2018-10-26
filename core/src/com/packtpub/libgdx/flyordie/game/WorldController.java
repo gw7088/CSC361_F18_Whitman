@@ -49,6 +49,9 @@ public class WorldController extends InputAdapter implements Disposable
     public float livesVisual;
     public float scoreVisual;
     
+    int timeLeft = 0;
+    float timeLeftDoublePointsup; 
+    
 	private Rectangle r1 = new Rectangle();
 	private Rectangle r2 = new Rectangle();
     
@@ -252,7 +255,12 @@ public class WorldController extends InputAdapter implements Disposable
 		
 		b.applyForceToCenter(3, 0, true);
 		b.setLinearDamping(1);
+		
+		timeLeftDoublePointsup -= deltaTime;
 
+		if (timeLeftDoublePointsup <= 0)
+			timeLeftDoublePointsup = 0;
+		
 		handleInputGame(deltaTime);
 		level.update(deltaTime);
 		testCollisions();
@@ -405,14 +413,25 @@ public class WorldController extends InputAdapter implements Disposable
 	private void onCollisionBirdWithGoldCoin(GoldCoin goldcoin)
 	{
 		goldcoin.collected = true;
-	    score += goldcoin.getScore();
-	    Gdx.app.log(TAG, "Gold coin collected");
+		
+		if(timeLeftDoublePointsup <= 0)
+		{	
+			score += goldcoin.getScore();
+	    	Gdx.app.log(TAG, "Gold coin collected");
+		}
+		else
+		{
+			score = (score + (goldcoin.getScore() * 2));
+			System.out.println("GOLD COIN WITH X2 POINTS");
+		}
 	}
 	
 	private void onCollisionBirdWithDoublePoint(DoublePoint doublepoint)
 	{
 		doublepoint.collected = true;
 		Gdx.app.log(TAG, "Double point collected");
+		
+		timeLeftDoublePointsup = Constants.DOUBLEPOINTS_POWERUP_DURATION;
 	}
 
 	/**
