@@ -30,7 +30,7 @@ public class CSC361_F18_Whitman extends Game
 		
 		// Load preferences for audio settings and start playing music
 		GamePreferences.instance.load();
-		//AudioManager.instance.play(Assets.instance.music.song01);
+		AudioManager.instance.play(Assets.instance.music.song01);
 		
 		//start game at menu screen
 		setScreen(new MenuScreen(this));

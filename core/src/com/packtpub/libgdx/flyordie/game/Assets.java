@@ -6,8 +6,11 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import com.packtpub.libgdx.flyordie.game.Assets.AssetMusic;
+import com.packtpub.libgdx.flyordie.game.Assets.AssetSounds;
 import com.packtpub.libgdx.flyordie.util.Constants;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,10 +24,36 @@ public class Assets implements Disposable, AssetErrorListener
 {
 	// Allows for fonts for the GUI
 	public AssetFonts fonts;
+	public AssetSounds sounds;
+	public AssetMusic music;	
+	
+	/**
+	 * class that will handle the loading of the sound files for each sound type
+	 * @author Denny Fleagle
+	 *
+	 */
+	public class AssetSounds
+	{
+		public final Sound jump;
+		public final Sound pickupCoin;
+		public final Sound smack;
+
+		
+		/**
+		 * Constructor that will handle the loading/assigning of the sound files
+		 * @param am
+		 */
+		public AssetSounds(AssetManager am)
+		{
+			jump = am.get("sounds/Flap.wav", Sound.class);
+			pickupCoin = am.get("sounds/Pickup_Coin.wav", Sound.class);
+			smack = am.get("sounds/Smack.wav", Sound.class);
+		}
+	}
 	
 	/**
 	 * Class that will handle the loading of the music assets
-	 * @author Greg Whitman
+	 * @author Denny Fleagle
 	 *
 	 */
 	public class AssetMusic
@@ -37,7 +66,7 @@ public class Assets implements Disposable, AssetErrorListener
 		 */
 		public AssetMusic(AssetManager am)
 		{
-			song01 = am.get("music/keith303_-_brand_new_highscore.mp3", Music.class);
+			song01 = am.get("music/Epic_Music.mp3", Music.class);
 		}
 	}
 	
@@ -155,6 +184,14 @@ public class Assets implements Disposable, AssetErrorListener
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS,
         TextureAtlas.class);
         
+        // Sounds
+        assetManager.load("sounds/Flap.wav", Sound.class);
+        assetManager.load("sounds/Smack.wav", Sound.class);
+        assetManager.load("sounds/Pickup_Coin.wav", Sound.class);
+        
+        // Music
+        assetManager.load("music/Epic_Music.mp3", Music.class);
+        
          // start loading assets and wait until finished
          assetManager.finishLoading();
          Gdx.app.debug(TAG, "# of assets loaded: "
@@ -179,6 +216,8 @@ public class Assets implements Disposable, AssetErrorListener
     	    goldCoin = new AssetGoldCoin(atlas);
     	    pipe = new AssetPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
+    	    sounds = new AssetSounds(assetManager);
+    	    music = new AssetMusic(assetManager);
     	 
    }
    @Override
