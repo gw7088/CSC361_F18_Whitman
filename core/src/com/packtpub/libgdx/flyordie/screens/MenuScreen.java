@@ -22,11 +22,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.packtpub.libgdx.flyordie.game.Assets;
-import com.packtpub.libgdx.flyordie.util.AudioManager;
 import com.packtpub.libgdx.flyordie.util.Constants;
-//import com.packtpub.libgdx.flyordie.util.CharacterSkin;
+import com.packtpub.libgdx.flyordie.util.CharacterSkin;
 import com.packtpub.libgdx.flyordie.util.GamePreferences;
-//import com.packtpub.libgdx.flyordie.util.AudioManager;
+import com.packtpub.libgdx.flyordie.util.AudioManager;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -36,7 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  * This sets up the rough menu screen and sets up some basic
  * event handling.
  * 
- * @author Gregory Whitman
+ * @author Adam Standke
  *
  */
 public class MenuScreen extends AbstractGameScreen
@@ -61,7 +60,7 @@ public class MenuScreen extends AbstractGameScreen
      private Slider sldSound;
      private CheckBox chkMusic;
      private Slider sldMusic;
-     //private SelectBox<CharacterSkin> selCharSkin;
+     private SelectBox<CharacterSkin> selCharSkin;
      private Image imgCharSkin;
      private CheckBox chkShowFpsCounter;
      // debug
@@ -141,7 +140,7 @@ public class MenuScreen extends AbstractGameScreen
 	     sldSound.setValue(prefs.volSound);
 	     chkMusic.setChecked(prefs.music);
 	     sldMusic.setValue(prefs.volMusic);
-	     //selCharSkin.setSelectedIndex(prefs.charSkin);
+	     selCharSkin.setSelectedIndex(prefs.charSkin);
 	     onCharSkinSelected(prefs.charSkin);
 	     chkShowFpsCounter.setChecked(prefs.showFpsCounter);
 	 }
@@ -157,7 +156,7 @@ public class MenuScreen extends AbstractGameScreen
 	     prefs.volSound = sldSound.getValue();
 	     prefs.music = chkMusic.isChecked();
 	     prefs.volMusic = sldMusic.getValue();
-	     //prefs.charSkin = selCharSkin.getSelectedIndex();
+	     prefs.charSkin = selCharSkin.getSelectedIndex();
 	     prefs.showFpsCounter = chkShowFpsCounter.isChecked();
 	     prefs.save();
 	  }
@@ -169,8 +168,8 @@ public class MenuScreen extends AbstractGameScreen
 	   */
 	  private void onCharSkinSelected(int index) 
 	  {
-	     //CharacterSkin skin = CharacterSkin.values()[index];
-	     //imgCharSkin.setColor(skin.getColor());
+	     CharacterSkin skin = CharacterSkin.values()[index];
+	     imgCharSkin.setColor(skin.getColor());
 	  }
 	 
 	  /**
@@ -280,20 +279,20 @@ public class MenuScreen extends AbstractGameScreen
 		     tbl.row();
 		     
 		     // + Drop down box filled with skin items
-		     //selCharSkin = new SelectBox<CharacterSkin>(skinLibgdx);
-		     //selCharSkin.setItems(CharacterSkin.values());
-		     //selCharSkin.addListener(new ChangeListener() {
-		    //	 @Override
-		    //	 public void changed(ChangeEvent event, Actor actor) 
-		    //	 {
-		    //		 onCharSkinSelected(((SelectBox<CharacterSkin>)actor).getSelectedIndex());
-		    //	 }
-		    //  });
+		     selCharSkin = new SelectBox<CharacterSkin>(skinLibgdx);
+		     selCharSkin.setItems(CharacterSkin.values());
+		     selCharSkin.addListener(new ChangeListener() {
+		    	 @Override
+		    	 public void changed(ChangeEvent event, Actor actor) 
+		    	 {
+		    		 onCharSkinSelected(((SelectBox<CharacterSkin>)actor).getSelectedIndex());
+		    	 }
+		      });
 		     
-		    // tbl.add(selCharSkin).width(120).padRight(20);
+		     tbl.add(selCharSkin).width(120).padRight(20);
 		     // + Skin preview image
-		    // imgCharSkin = new Image(Assets.instance.bunny.head);
-		     //tbl.add(imgCharSkin).width(50).height(50);
+		     imgCharSkin = new Image(Assets.instance.bird.character);
+		     tbl.add(imgCharSkin).width(50).height(50);
 		     return tbl;
 	}
 	
@@ -414,21 +413,21 @@ public class MenuScreen extends AbstractGameScreen
 	 * ready to be rendered. First two new skin textures are created one for the 
 	 * the main menu UI and another for the window option UI. Then each layer of 
 	 * the UI is constructed through helper methods and a table is sent back. After
-	 * clearing the stage's previous root child and new stack widgetgroup is created 
-	 * to overlay/position each of the previous tables ontop of each other 
+	 * clearing the stage's previous root child and new stack widget group is created 
+	 * to overlay/position each of the previous tables on top of each other 
 	 */
 	private void rebuildStage () 
 	{
-	    	//skinCanyonBunny = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI),
-	    	//				  new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
+	    	skinCanyonBunny = new Skin(Gdx.files.internal(Constants.SKIN_CANYONBUNNY_UI),
+	    					  new TextureAtlas(Constants.TEXTURE_ATLAS_UI));
 	    	
-	    	//skinLibgdx = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),
-	    	//		     new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
+	    	skinLibgdx = new Skin(Gdx.files.internal(Constants.SKIN_LIBGDX_UI),
+	    			     new TextureAtlas(Constants.TEXTURE_ATLAS_LIBGDX_UI));
 	       
 	       // build all layers
-	       Table layerBackground = buildBackgroundLayer();
+	       //Table layerBackground = buildBackgroundLayer();
 	       Table layerObjects = buildObjectsLayer();
-	       Table layerLogos = buildLogosLayer();
+	       //Table layerLogos = buildLogosLayer();
 	       Table layerControls = buildControlsLayer();
 	       Table layerOptionsWindow = buildOptionsWindowLayer();
 	       
@@ -437,26 +436,28 @@ public class MenuScreen extends AbstractGameScreen
 	       Stack stack = new Stack();
 	       stage.addActor(stack);
 	       stack.setSize(Constants.VIEWPORT_GUI_WIDTH,Constants.VIEWPORT_GUI_HEIGHT);
-	       stack.add(layerBackground);
+	       //stack.add(layerBackground);
 	       stack.add(layerObjects);
-	       stack.add(layerLogos);
+	       //stack.add(layerLogos);
 	       stack.add(layerControls);
-	       //stage.addActor(layerOptionsWindow);
+	       stage.addActor(layerOptionsWindow);
 	 }
 	
 	 /**
 	  * Private method that builds the background image for
 	  * main menu's UI
 	  * @return a Table object that is a layout widget
-	  */
+	  *
 	 private Table buildBackgroundLayer () 
 	 {
 	       Table layer = new Table();
 	       // + Background
-	       //imgBackground = new Image(skinCanyonBunny, "background");
-	       //layer.add(imgBackground);
+	       imgBackground = new Image(skinCanyonBunny, "background");
+	       layer.add(imgBackground);
 	       return layer;
 	 }
+	 */
+	 
 	 /**
 	  * Private method that builds the gold coin and bunny
 	  * head images for the main menu's UI
@@ -466,44 +467,47 @@ public class MenuScreen extends AbstractGameScreen
 	 {
 	       Table layer = new Table();
 	       // + Coins
-	       //imgCoins = new Image(skinCanyonBunny, "coins");
-	       //layer.addActor(imgCoins);
-	       //imgCoins.setOrigin(imgCoins.getWidth() / 2, imgCoins.getHeight() / 2);
-	       //imgCoins.addAction(sequence(moveTo(135, -20), scaleTo(0, 0), fadeOut(0), delay(2.5f), 
-	    	//	   parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut), 
-	    	//	   scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear), alpha(1.0f, 0.5f))));
+	       imgCoins = new Image(skinCanyonBunny, "coins");
+	       layer.addActor(imgCoins);
+	       imgCoins.setOrigin(imgCoins.getWidth() / 2, imgCoins.getHeight() / 2);
+	       imgCoins.addAction(sequence(moveTo(135, -20), scaleTo(0, 0), fadeOut(0), delay(2.5f), 
+	    		   parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut), 
+	    		   scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear), alpha(1.0f, 0.5f))));
 	       
+	       /**
 	       // + Bunny
-	       //imgBunny = new Image(skinCanyonBunny, "bunny");
-	       //layer.addActor(imgBunny);
-	       //imgBunny.addAction(sequence(moveTo(655, 510),
-	    	//	   delay(4.0f), 
-	    	//	   moveBy(-70, -100, 0.5f, Interpolation.fade),
-	    	//	   moveBy(-100, -50, 0.5f, Interpolation.fade), 
-	    	//	   moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
-	       
+	       imgBunny = new Image(skinCanyonBunny, "bunny");
+	       layer.addActor(imgBunny);
+	       imgBunny.addAction(sequence(moveTo(655, 510),
+	    		   delay(4.0f), 
+	    		   moveBy(-70, -100, 0.5f, Interpolation.fade),
+	    		   moveBy(-100, -50, 0.5f, Interpolation.fade), 
+	    		   moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
+	       */
 	       return layer;
 	 }
 	 
+	 /**
 	 /**
 	  * Private method that builds the orange
 	  * canyonbunny head and LibGDX logo seen
 	  * at the top and bottom left side of the main menu's UI
 	  * @return a Table object that is a layout widget
-	  */
+	  *
 	 private Table buildLogosLayer () 
 	 {
 	       Table layer = new Table();
 	       layer.left().top();
 	       // + Game Logo
-	       //imgLogo = new Image(skinCanyonBunny, "logo");
-	       //layer.add(imgLogo);
-	       //layer.row().expandY();
+	       imgLogo = new Image(skinCanyonBunny, "logo");
+	       layer.add(imgLogo);
+	       layer.row().expandY();
 	       // + Info Logos
-	       //imgInfo = new Image(skinCanyonBunny, "info"); layer.add(imgInfo).bottom();
+	       imgInfo = new Image(skinCanyonBunny, "info"); layer.add(imgInfo).bottom();
 //	       if (debugEnabled) layer.debug();
 	       return layer;
 	 }
+	 */
 	 
 	 /**
 	  * Private method that builds the two interactive buttons
@@ -517,30 +521,30 @@ public class MenuScreen extends AbstractGameScreen
 	       layer.right().bottom();
 	       
 	       // + Play Button
-	       //btnMenuPlay = new Button(skinCanyonBunny, "play");
-	       //layer.add(btnMenuPlay);
-	       //btnMenuPlay.addListener(new ChangeListener()
-	       //{
-	    	//   @Override
-	    	//   public void changed(ChangeEvent event, Actor actor)
-	    	//   {
-	    	//	   onPlayClicked();
-	    	//   }
-	 		//});
+	       btnMenuPlay = new Button(skinCanyonBunny, "play");
+	       layer.add(btnMenuPlay);
+	       btnMenuPlay.addListener(new ChangeListener()
+	       {
+	    	   @Override
+	    	   public void changed(ChangeEvent event, Actor actor)
+	    	   {
+	    		   onPlayClicked();
+	    	   }
+	       });
 	       
 	       layer.row();
 	       
 	       // + Options Button
-	       //btnMenuOptions = new Button(skinCanyonBunny, "options");
+	       btnMenuOptions = new Button(skinCanyonBunny, "options");
 	       layer.add(btnMenuOptions);
-	       //btnMenuOptions.addListener(new ChangeListener()
-		   //{
-	    	//   @Override
-	    	//   public void changed(ChangeEvent event, Actor actor)
-	    	//   {
-	    	//	   onOptionsClicked();
-	    	 //  }
-	       //});
+	       btnMenuOptions.addListener(new ChangeListener()
+		   {
+	    	   @Override
+	    	   public void changed(ChangeEvent event, Actor actor)
+	    	   {
+	    		   onOptionsClicked();
+	    	   }
+	       });
 	       
 	      /* if (debugEnabled)
 	       {
@@ -557,24 +561,24 @@ public class MenuScreen extends AbstractGameScreen
 	  */
 	 private Table buildOptionsWindowLayer () 
 	 {
-		 //winOptions = new Window("Options", skinLibgdx);
+		 winOptions = new Window("Options", skinLibgdx);
 	     // + Audio Settings: Sound/Music CheckBox and Volume Slider
-	     //winOptions.add(buildOptWinAudioSettings()).row();
+	     winOptions.add(buildOptWinAudioSettings()).row();
 	     // + Character Skin: Selection Box (White, Gray, Brown)
-	    // winOptions.add(buildOptWinSkinSelection()).row();
+	     winOptions.add(buildOptWinSkinSelection()).row();
 	     // + Debug: Show FPS Counter
-	     //winOptions.add(buildOptWinDebug()).row();
+	     winOptions.add(buildOptWinDebug()).row();
 	     // + Separator and Buttons (Save, Cancel)
-	    // winOptions.add(buildOptWinButtons()).pad(10, 0, 10, 0);
+	     winOptions.add(buildOptWinButtons()).pad(10, 0, 10, 0);
 	     // Make options window slightly transparent
-	     //winOptions.setColor(1, 1, 1, 0.8f);
+	     winOptions.setColor(1, 1, 1, 0.8f);
 	     // Hide options window by default
-	     //showOptionsWindow(false, false);
+	     showOptionsWindow(false, false);
 //	     if (debugEnabled) winOptions.debug();
 	     // Let TableLayout recalculate widget sizes and positions
-	     //winOptions.pack();
+	     winOptions.pack();
 	     // Move options window to bottom right corner
-	     //winOptions.setPosition(Constants.VIEWPORT_GUI_WIDTH - winOptions.getWidth() - 50, 50);
+	     winOptions.setPosition(Constants.VIEWPORT_GUI_WIDTH - winOptions.getWidth() - 50, 50);
 	     return winOptions;
 	 }
 	 
