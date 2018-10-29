@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.flyordie.util.Constants;
@@ -20,6 +21,25 @@ public class Assets implements Disposable, AssetErrorListener
 {
 	// Allows for fonts for the GUI
 	public AssetFonts fonts;
+	
+	/**
+	 * Class that will handle the loading of the music assets
+	 * @author Greg Whitman
+	 *
+	 */
+	public class AssetMusic
+	{
+		public final Music song01;
+		
+		/**
+		 * Constructor will assign the music files for the given sound
+		 * @param am
+		 */
+		public AssetMusic(AssetManager am)
+		{
+			song01 = am.get("music/keith303_-_brand_new_highscore.mp3", Music.class);
+		}
+	}
 	
 	/**
      *  Assigns assets from the atlas to a
