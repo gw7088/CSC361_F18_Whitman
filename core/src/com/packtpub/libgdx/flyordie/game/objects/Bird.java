@@ -3,6 +3,9 @@ package com.packtpub.libgdx.flyordie.game.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.packtpub.libgdx.flyordie.util.AudioManager;
+import com.packtpub.libgdx.flyordie.util.CharacterSkin;
+import com.packtpub.libgdx.flyordie.util.GamePreferences;
 import com.packtpub.libgdx.flyordie.game.Assets;
 import com.packtpub.libgdx.flyordie.util.Constants;
 
@@ -49,6 +52,8 @@ public class Bird extends AbstractGameObject
 		dimension.set(1, 1);
 		regHead = Assets.instance.bird.character;
 		
+		jump = false;
+		
 		//center image on game object
 		//origin.set(dimension.x /2, dimension.y /2);
 		
@@ -72,6 +77,18 @@ public class Bird extends AbstractGameObject
 			timeLeftDoublePoints = Constants.DOUBLEPOINTS_POWERUP_DURATION;
 		}
 	}
+	
+	/**
+	public void isJumping()
+	{
+		if(jump == true)
+		{
+			AudioManager.instance.play(Assets.instance.sounds.jump);
+		}
+		else
+			jump = false;
+	}
+	*/
 	
 	/**
 	 * determine if the Bird has a x2 points power up
@@ -111,6 +128,8 @@ public class Bird extends AbstractGameObject
 	public void render(SpriteBatch batch)
 	{
 		TextureRegion reg = null;
+		
+		batch.setColor(CharacterSkin.values() [GamePreferences.instance.charSkin].getColor());
 		
 		//set special color when game object has a x2 power-up
 		if(hasDoublePointsup)
