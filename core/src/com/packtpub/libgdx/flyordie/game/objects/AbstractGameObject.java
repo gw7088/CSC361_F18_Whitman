@@ -1,5 +1,6 @@
 package com.packtpub.libgdx.flyordie.game.objects;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +22,18 @@ public abstract class AbstractGameObject
 	public Rectangle bounds;
 	public Body body;
 	
+	public float stateTime;
+	public Animation animation;
+	
+	/*
+	 * Starts the animation time
+	 */
+	public void setAnimation (Animation animation)
+	{
+		this.animation = animation;
+		stateTime = 0;
+	}
+	
 	/**
 	 * All game objects should have instantiated 
 	 * variables to work with.
@@ -41,6 +54,8 @@ public abstract class AbstractGameObject
 	 */
 	public void update(float deltaTime)
 	{
+		stateTime += deltaTime;
+		
 		position.set(body.getPosition());
 	}
 	

@@ -1,13 +1,17 @@
 package com.packtpub.libgdx.flyordie.game.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.packtpub.libgdx.flyordie.util.AudioManager;
 import com.packtpub.libgdx.flyordie.util.CharacterSkin;
 import com.packtpub.libgdx.flyordie.util.GamePreferences;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.packtpub.libgdx.flyordie.game.Assets;
 import com.packtpub.libgdx.flyordie.util.Constants;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.math.MathUtils;
+import com.packtpub.libgdx.flyordie.util.AudioManager;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 /**
  * Concrete game object that manages the bird
@@ -36,6 +40,8 @@ public class Bird extends AbstractGameObject
 	//Jump boolean
 	public boolean jump;
 	
+	private Animation animNormal;
+		
 	/**
 	 * constructor for the bird
 	 */
@@ -50,12 +56,15 @@ public class Bird extends AbstractGameObject
 	public void init() 
 	{
 		dimension.set(1, 1);
+		
+		animNormal = Assets.instance.bird.animNormal;
+		
+		setAnimation(animNormal);
+		
 		regHead = Assets.instance.bird.character;
 		
 		jump = false;
 		
-		//center image on game object
-		//origin.set(dimension.x /2, dimension.y /2);
 		
 		//Bounding box for collision detection
 		bounds.set(0, 0, dimension.x, dimension.y);
@@ -138,7 +147,8 @@ public class Bird extends AbstractGameObject
 		}
 		
 		//draw image
-		reg = regHead;
+		reg = (TextureRegion) animation.getKeyFrame(stateTime, true);
+		//reg = regHead;
 		batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, // position.y - 5.5f
 				dimension.x, dimension.y, scale.x, scale.y, rotation, 
 				reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), 
