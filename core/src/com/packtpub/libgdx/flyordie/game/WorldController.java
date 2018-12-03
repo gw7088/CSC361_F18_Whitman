@@ -304,6 +304,15 @@ public class WorldController extends InputAdapter implements Disposable
 		{
 			handleInputGame(deltaTime);
 			
+			if (timeLeftDoublePointsup <= 0)
+			{
+				
+			}
+			else
+			{
+				timeLeftDoublePointsup-= deltaTime;
+			}
+			
 			b.applyForceToCenter(2, 0, true); //3
 			b.setLinearDamping(1);
 			
@@ -354,7 +363,7 @@ public class WorldController extends InputAdapter implements Disposable
 	    		     
 	    		     AudioManager.instance.play(Assets.instance.sounds.jump);
 
-	    		     System.out.println("Jump");
+	    		     //System.out.println("Jump");
 	    		     b.applyForceToCenter(0, 450, true); // 0, 100, true
 	    		     //b.applyLinearImpulse(0, 1, .5f, .5f, true);
 
@@ -514,7 +523,7 @@ public class WorldController extends InputAdapter implements Disposable
 		else
 		{
 			score = (score + (goldcoin.getScore() * 2));
-			//System.out.println("GOLD COIN WITH X2 POINTS");
+			System.out.println("GOLD COIN WITH X2 POINTS");
 		}
 	}
 	
@@ -539,7 +548,7 @@ public class WorldController extends InputAdapter implements Disposable
 	private void onCollisionBirdWithGoal(Goal goal)
 	{
 		timeLeftGameOverDelay = Constants.TIME_DELAY_GAME_FINISHED;
-		System.out.println("REACHED THE GOAL");
+		//System.out.println("REACHED THE GOAL");
 		goalReached = true;
 	}
 

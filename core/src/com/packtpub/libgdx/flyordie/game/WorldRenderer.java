@@ -251,15 +251,16 @@ public class WorldRenderer implements Disposable
 		float y = 30;
 		float timeLeftDoublePointsup = 
 				worldController.timeLeftDoublePointsup;
+		System.out.println(timeLeftDoublePointsup);
 		
 		if (timeLeftDoublePointsup > 0)
 		{
 			// Start icon fade in/out if the left power-up time
-			// is less than 4 seconds. The fade interval is sete
+			// is less than 2 seconds. The fade interval is set
 			// to 5 changes per second.
-			if (timeLeftDoublePointsup < 4)
+			if (timeLeftDoublePointsup <= 2)// 4
 			{
-				if (((int) (timeLeftDoublePointsup * 5) % 2) != 0)
+				if (((int) (timeLeftDoublePointsup * 5) % 2) != 0)// 5 2 0
 				{
 					batch.setColor(1, 1, 1, 0.5f);
 				}

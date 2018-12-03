@@ -30,7 +30,7 @@ public class Constants
 	public static final int LIVES_START = 1;
 
 	// How long x2 points lasts
-	public static final float DOUBLEPOINTS_POWERUP_DURATION = 6;
+	public static final float DOUBLEPOINTS_POWERUP_DURATION = 4;
 
 	public static final float TIME_DELAY_GAME_FINISHED = 6;
 	
