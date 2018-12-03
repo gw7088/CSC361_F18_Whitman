@@ -35,7 +35,7 @@ import com.packtpub.libgdx.flyordie.game.objects.Bird;
  */
 public class WorldController extends InputAdapter implements Disposable 
 {
-	//an instance of the game object (added p233 Denny Fleagle)
+	//an instance of the game object
 	private Game game;
 	
 	public World b2world;
