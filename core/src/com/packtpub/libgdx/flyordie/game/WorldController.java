@@ -23,6 +23,8 @@ import com.packtpub.libgdx.flyordie.game.objects.GoldCoin;
 import com.packtpub.libgdx.flyordie.game.objects.Pipe;
 import com.packtpub.libgdx.flyordie.util.Constants;
 import com.packtpub.libgdx.flyordie.screens.MenuScreen;
+import com.packtpub.libgdx.flyordie.game.Assets;
+import com.packtpub.libgdx.flyordie.util.AudioManager;
 import com.packtpub.libgdx.flyordie.game.objects.Bird;
 
 /**
@@ -33,7 +35,7 @@ import com.packtpub.libgdx.flyordie.game.objects.Bird;
  */
 public class WorldController extends InputAdapter implements Disposable 
 {
-	//an instance of the game object (added p233 Denny Fleagle)
+	//an instance of the game object
 	private Game game;
 	
 	public World b2world;
@@ -238,6 +240,7 @@ public class WorldController extends InputAdapter implements Disposable
     	FixtureDef fixture = new FixtureDef();
     	fixture.shape = shape;
     	fixture.restitution = .25f;
+    	fixture.friction = 0f;
     	b.createFixture(fixture);
     	polygonShape.dispose();
     	
@@ -293,7 +296,7 @@ public class WorldController extends InputAdapter implements Disposable
 			timeLeftGameOverDelay -= deltaTime;
 			if (timeLeftGameOverDelay < 0)
 			{
-				backToMenu();
+				//backToMenu();
 				return; 
 			}
 		}
@@ -301,7 +304,7 @@ public class WorldController extends InputAdapter implements Disposable
 		{
 			handleInputGame(deltaTime);
 			
-			b.applyForceToCenter(3, 0, true);
+			b.applyForceToCenter(2, 0, true); //3
 			b.setLinearDamping(1);
 			
 			level.update(deltaTime);
@@ -340,20 +343,22 @@ public class WorldController extends InputAdapter implements Disposable
 	        
 	    	 }
 	    	 // Bird Jump
-	    	 if (Gdx.input.isKeyPressed(Keys.SPACE))
+	    	 if ( Gdx.input.isKeyJustPressed(Keys.SPACE) )//Gdx.input.isKeyPressed(Keys.SPACE))
 	    	 {
-	    		 long lastPressProcessed = 0;
+	    		 //long lastPressProcessed = 0;
 	    		 
-         		 if(System.currentTimeMillis() - lastPressProcessed > 5000) 
-	    		 {
+         		 //if(System.currentTimeMillis() - lastPressProcessed > 5000) 
+	    		 //{
          			 //Do your work here...
-	    		     lastPressProcessed = System.currentTimeMillis();     
+	    		     //lastPressProcessed = System.currentTimeMillis();
+	    		     
+	    		     AudioManager.instance.play(Assets.instance.sounds.jump);
 
 	    		     System.out.println("Jump");
-	    		     //b.applyForceToCenter(0, 100, true); // 0, 100, true
-	    		     b.applyLinearImpulse(0, 1, .5f, .5f, true);
+	    		     b.applyForceToCenter(0, 450, true); // 0, 100, true
+	    		     //b.applyLinearImpulse(0, 1, .5f, .5f, true);
 
-	    		 }
+	    		 //}
 	    	 } 
 	    	 else 
 	    	 {
@@ -477,6 +482,7 @@ public class WorldController extends InputAdapter implements Disposable
 	 */
 	private void onCollisionBirdWithPipe(Pipe pipe) 
 	{
+		AudioManager.instance.play(Assets.instance.sounds.smack);
 		lives--;
 	}
 	
@@ -486,7 +492,7 @@ public class WorldController extends InputAdapter implements Disposable
 	 */
 	private void onCollisionBirdWithBrick(Brick brick) 
 	{
-
+		//AudioManager.instance.play(Assets.instance.sounds.smack);
 		lives--;
 	}
 	
@@ -496,17 +502,19 @@ public class WorldController extends InputAdapter implements Disposable
 	 */
 	private void onCollisionBirdWithGoldCoin(GoldCoin goldcoin)
 	{
+		
 		goldcoin.collected = true;
+		AudioManager.instance.play(Assets.instance.sounds.pickupCoin);
 		
 		if(timeLeftDoublePointsup <= 0)
 		{	
 			score += goldcoin.getScore();
-	    	Gdx.app.log(TAG, "Gold coin collected");
+	    	//Gdx.app.log(TAG, "Gold coin collected");
 		}
 		else
 		{
 			score = (score + (goldcoin.getScore() * 2));
-			System.out.println("GOLD COIN WITH X2 POINTS");
+			//System.out.println("GOLD COIN WITH X2 POINTS");
 		}
 	}
 	
@@ -517,7 +525,9 @@ public class WorldController extends InputAdapter implements Disposable
 	private void onCollisionBirdWithDoublePoint(DoublePoint doublepoint)
 	{
 		doublepoint.collected = true;
-		Gdx.app.log(TAG, "Double point collected");
+		AudioManager.instance.play(Assets.instance.sounds.pickupCoin);
+		
+		//Gdx.app.log(TAG, "Double point collected");
 		
 		timeLeftDoublePointsup = Constants.DOUBLEPOINTS_POWERUP_DURATION;
 	}

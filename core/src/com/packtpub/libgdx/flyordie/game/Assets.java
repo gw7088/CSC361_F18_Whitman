@@ -1,17 +1,23 @@
 package com.packtpub.libgdx.flyordie.game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.packtpub.libgdx.flyordie.game.Assets.AssetMusic;
+import com.packtpub.libgdx.flyordie.game.Assets.AssetSounds;
 import com.packtpub.libgdx.flyordie.util.Constants;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 /*
  * By Greg Whitman
@@ -21,10 +27,36 @@ public class Assets implements Disposable, AssetErrorListener
 {
 	// Allows for fonts for the GUI
 	public AssetFonts fonts;
+	public AssetSounds sounds;
+	public AssetMusic music;	
+	
+	/**
+	 * class that will handle the loading of the sound files for each sound type
+	 * @author Denny Fleagle
+	 *
+	 */
+	public class AssetSounds
+	{
+		public final Sound jump;
+		public final Sound pickupCoin;
+		public final Sound smack;
+
+		
+		/**
+		 * Constructor that will handle the loading/assigning of the sound files
+		 * @param am
+		 */
+		public AssetSounds(AssetManager am)
+		{
+			jump = am.get("sounds/Flap.wav", Sound.class);
+			pickupCoin = am.get("sounds/Pickup_Coin.wav", Sound.class);
+			smack = am.get("sounds/Smack.wav", Sound.class);
+		}
+	}
 	
 	/**
 	 * Class that will handle the loading of the music assets
-	 * @author Greg Whitman
+	 * @author Denny Fleagle
 	 *
 	 */
 	public class AssetMusic
@@ -37,7 +69,7 @@ public class Assets implements Disposable, AssetErrorListener
 		 */
 		public AssetMusic(AssetManager am)
 		{
-			song01 = am.get("music/keith303_-_brand_new_highscore.mp3", Music.class);
+			song01 = am.get("music/Epic_Music.mp3", Music.class);
 		}
 	}
 	
@@ -96,7 +128,44 @@ public class Assets implements Disposable, AssetErrorListener
 			goldCoin = atlas.findRegion("item_gold_coin");
 		}
 	}
-    
+    /**
+	
+		public final AtlasRegion head;
+    	public final Animation animNormal;
+    	public final Animation animCopterTransform; 
+    	public final Animation animCopterTransformBack; 
+    	public final Animation animCopterRotate;
+
+    	
+    	public AssetBunny (TextureAtlas atlas)
+    	{
+    		head = atlas.findRegion("bunny_head");
+    		
+    		Array<AtlasRegion> regions = null;
+    	    AtlasRegion region = null;
+    	    
+    	    // Animation: Bunny Normal
+    	    regions = atlas.findRegions("anim_bunny_normal");
+    	    animNormal = new Animation(1.0f / 10.0f, regions, Animation.PlayMode.LOOP_PINGPONG);
+    	    
+    	    // Animation: Bunny Copter - knot ears
+    	    regions = atlas.findRegions("anim_bunny_copter");
+    	    animCopterTransform = new Animation(1.0f / 10.0f, regions);
+    	    
+    	    // Animation: Bunny Copter - unknot ears
+    	    regions = atlas.findRegions("anim_bunny_copter");
+    	    animCopterTransformBack = new Animation(1.0f / 10.0f, regions, Animation.PlayMode.REVERSED);
+    	    
+    	    // Animation: Bunny Copter - rotate ears
+    	    regions = new Array<AtlasRegion>();
+    	    regions.add(atlas.findRegion("anim_bunny_copter", 4));
+    	    regions.add(atlas.findRegion("anim_bunny_copter", 5));
+    	    animCopterRotate = new Animation(1.0f / 15.0f, regions);
+
+    	}
+	
+	*/
+	
     /**
      * Assigns assets from the atlas to a
      * region gives it a texture
@@ -104,10 +173,24 @@ public class Assets implements Disposable, AssetErrorListener
     public class AssetPlayer
     {
     	public final AtlasRegion character;
-    	
-    	public AssetPlayer (TextureAtlas atlas)
+    	public final Animation animNormal;
+
+		public AssetPlayer (TextureAtlas atlas)
     	{
+    		
     		character = atlas.findRegion("frame-1");
+			
+    		Array<AtlasRegion> regions = null;
+    		AtlasRegion region = null;
+    		
+    		regions = new Array<AtlasRegion>();
+    		regions.add(atlas.findRegion("frame-1"));
+    	    regions.add(atlas.findRegion("frame-2"));
+    	    regions.add(atlas.findRegion("frame-3"));
+    	    regions.add (atlas.findRegion("frame-4"));
+    	    animNormal = new Animation(1.0f / 15.0f, regions);
+    		
+    		
     	}
     }
     
@@ -155,6 +238,14 @@ public class Assets implements Disposable, AssetErrorListener
         assetManager.load(Constants.TEXTURE_ATLAS_OBJECTS,
         TextureAtlas.class);
         
+        // Sounds
+        assetManager.load("sounds/Flap.wav", Sound.class);
+        assetManager.load("sounds/Smack.wav", Sound.class);
+        assetManager.load("sounds/Pickup_Coin.wav", Sound.class);
+        
+        // Music
+        assetManager.load("music/Epic_Music.mp3", Music.class);
+        
          // start loading assets and wait until finished
          assetManager.finishLoading();
          Gdx.app.debug(TAG, "# of assets loaded: "
@@ -179,6 +270,8 @@ public class Assets implements Disposable, AssetErrorListener
     	    goldCoin = new AssetGoldCoin(atlas);
     	    pipe = new AssetPipe(atlas);
     	    levelDecoration = new AssetLevelDecoration(atlas);
+    	    sounds = new AssetSounds(assetManager);
+    	    music = new AssetMusic(assetManager);
     	 
    }
    @Override
@@ -203,13 +296,12 @@ public class Assets implements Disposable, AssetErrorListener
            cloud03 = atlas.findRegion("cloud03");
        } 
    }
-   public void error (String filename, Class type, Throwable throwable) 
+   public void error (String filename, Class<?> type, Throwable throwable) 
    {
 	   Gdx.app.error(TAG, "Couldn't load asset '"
 			+ filename + "'", (Exception)throwable);
    }
    
-   @Override
    public void error(AssetDescriptor asset, Throwable throwable) 
    {
 	   Gdx.app.error(TAG, "Couldn't load asset '" +
